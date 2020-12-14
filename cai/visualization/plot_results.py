@@ -7,12 +7,13 @@ import os
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-def plot_numpy(result, save_path=None, save_name=None, 
+def plot_dataframe(result, save_path=None, save_name=None, 
     title=None, ending='.png', x_name='Epoch', y_name='Value',
     ylog=False, figsize=(10,5), xints=int, yints=int):
     """Plots a dataframe
 
     Args:
+        result (2-dimensional dataframe): Values that needs to be plotted.
         save_path (str): path to save plot. If None, plot is shown.
         save_name (str): name with which plot is saved
         title (str): the title that will appear on the plot
