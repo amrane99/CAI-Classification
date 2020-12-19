@@ -1,5 +1,5 @@
 # CAI-Classification
-In a surgical environment it is important to keep track of the phase of the operation. An important indicator of phase is the kind of tools, which are present. This repository offers a tool for computer-assisted interventions (CAI) classification based on Cholec80 video recordings of surgical operations. 
+In a surgical environment it is important to keep track of the phase of an operation. An important indicator is the kind of tools, which are present/used during the surgical operation. This repository offers a tool for computer-assisted interventions (CAI) classification based on Cholec80 video recordings of surgical operations. 
 
 ## Installation
 Use Anaconda to install everything:
