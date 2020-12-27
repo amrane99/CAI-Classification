@@ -11,7 +11,7 @@ and activate the environment.
 4. Execute ```pip install -r requirements.txt``` to install all required packages.
 5. Set your paths in cai.paths.py.
 6. Execute ```git update-index --assume-unchanged cai/paths.py``` so that changes in the paths file are not tracked in the repository.
-7. Execute ```pytest``` to test the correct installation. Note that one of the tests will test whether at least one GPU is present, if you do not wish to test this ignore the result. The same holds for tests that used datasets which must be downloaded previously.
+7. Execute ```pytest``` to test the correct installation. Note that one of the tests will test whether at least one GPU is present, if you do not want to test this, remove the test or ignore the result. The same goes for tests, testing the presence of dataset(s) that should be downloaded in advance.
 
 When using pylint, torch and numpy warnings appear. To avoid these, include generated-members=numpy.*, torch.* in the .pylintrc file.
 
