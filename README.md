@@ -1,5 +1,5 @@
 # CAI-Classification
-In a surgical environment it is important to keep track of the phase of the operation. An important indicator of phase is the kind of tools, which are present. This repository offers a tool for classification based on Cholec80 video recordings of surgical operations. 
+In a surgical environment it is important to keep track of the phase of an operation. An important indicator is the kind of tools, which are present/used during the surgical operation. This repository offers a tool for computer-assisted interventions (CAI) classification based on Cholec80 video recordings of surgical operations. 
 
 ## Installation
 Use Anaconda to install everything:
@@ -11,9 +11,9 @@ and activate the environment.
 4. Execute ```pip install -r requirements.txt``` to install all required packages.
 5. Set your paths in cai.paths.py.
 6. Execute ```git update-index --assume-unchanged cai/paths.py``` so that changes in the paths file are not tracked in the repository.
-7. Execute ```pytest``` to test the correct installation. Note that one of the tests will test whether at least one GPU is present, if you do not wish to test this ignore the result. The same holds for tests that used datasets which much be previously downloaded.
+7. Execute ```pytest``` to test the correct installation. Note that one of the tests will test whether at least one GPU is present, if you do not want to test this, remove the test or ignore the result. The same goes for tests, testing the presence of datasets that should be downloaded in advance.
 
-When using pylint, torch and numpy warnings appear. To avoid these, include generated-members=numpy.*, torch.* in the .pylintrc file.
+When using pylint, torch and numpy, warnings appear. To avoid these, include generated-members=numpy.*, torch.* in the .pylintrc file.
 
 ## Developer
 Please stick to the code style conventions in code_style_conventions.py
