@@ -1,5 +1,6 @@
 # ------------------------------------------------------------------------------
 # Functions to store and restore PyTorch objects.
+# Substantial portions from https://github.com/camgbus/medical_pytorch project.
 # ------------------------------------------------------------------------------
 
 import torch
