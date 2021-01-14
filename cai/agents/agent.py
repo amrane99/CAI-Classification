@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------------------
 # An Agent is an extension of a model. It also includes the logic to train the 
-# model. This superclass diverges slightly from mp.agents.agent.Agent.
+# model. This superclass diverges slightly from cai.agents.agent.Agent.
 # Substantial portions from https://github.com/camgbus/medical_pytorch project.
 # ------------------------------------------------------------------------------
 
@@ -33,9 +33,9 @@ class Agent:
         pass
 
     def test(self, loss_f, test_dataloader, msg_bot=False):
-    r"""Test a model through its agent. Needs to be overwritten.
-    """
-    pass
+        r"""Test a model through its agent. Needs to be overwritten.
+        """
+        pass
 
     def save_state(self, states_path, state_name, optimizer=None, overwrite=False):
         r"""Saves an agent state. Raises an error if the directory exists and 

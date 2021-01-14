@@ -17,9 +17,12 @@ from cai.data.datasets.dataset_augmentation import augment_data, load_datset, sa
 
 
 class Cholec80(ClassificationDataset):
-    r"""The Cholec80 dataset. TODO: modify shape and norm!
+    r"""The Cholec80 dataset.
     """
-    def __init__(self, root_path=None):
-        super().__init__(name='Cholec80', input_shape=(3, 32, 32), 
-        x_norm={'mean': (0.4914, 0.4822, 0.4465), 'std': (0.247, 0.243, 0.262)}
-        )
+    pass
+
+class Cholec80Restored(ClassificationDataset):
+    r"""The Cholec80 dataset that will be restored after a termination
+    during training caused by an error.
+    """
+    pass
