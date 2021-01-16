@@ -5,22 +5,30 @@
 
 import os
 from cai.data.datasets.dataset import Dataset, Instance
-import mp.data.datasets.dataset_utils as du
+import cai.data.datasets.dataset_utils as du
 import torchio
+import torchvision
 import torch
+import json
 
 class ClassificationPathInstance(Instance):
-    def __init__(self, x_path, y_label, name=None, class_ix=0, group_id=None):
+    def __init__(self, x_path, y_path, name=None, class_ix=0, group_id=None):
         r"""Classification instance.
 
             Args:
             x_path (str): path to image
-            y_label (torch.tensor): the appeared toolsvideo at x_path (1, ..., 8)
+            y_path (st): path to label for the tools present in video based on fps
         """
         assert isinstance(x_path, str)
-        assert torch.is_tensor(y_label)
-        x = torchio.Image(x_path, type=torchio.INTENSITY)
-        y = y_label
+        assert isinstance(y_path, str)
+        x = torchvision.io.read_video(x_path)
+        with open(y_path, 'r') as fp:
+            y = json.load(fp)
+
+        # Transform label list into torch.tensors
+        for key, value in y.items():
+            y[key] = torch.tensor(value)
+
         self.shape = x.shape
         super().__init__(x=x, y=y, name=name, class_ix=class_ix, 
             group_id=group_id)

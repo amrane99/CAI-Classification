@@ -43,8 +43,8 @@ def augment_data(data, dataset_name, is_list=False,
     r"""This function takes a dataset and creates augmented datasets. 
         It saves the data based on transmitted information and returns the data in form of a list
         with its labels as a dictionary. If random is true, random images will be selected."""
-        #TODO
-        pass
+    #TODO
+    pass
     
 # Spatial Functions for data Augmentation
 def random_affine(scales=(0.9, 1.1), degrees=10, translation=0, isotropic=False,

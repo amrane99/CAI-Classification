@@ -9,13 +9,22 @@ from torch.utils.data import DataLoader
 import torch.optim as optim
 from cai.data.data import Data
 from cai.data.datasets.ds_cholec80_classification import Cholec80, Cholec80Restored
-from cai.experiments.data_splitting import split_dataset
+from cai.data.datasets.data_splitting import split_dataset
 import cai.utils.load_restore as lr
 from cai.data.pytorch.pytorch_classification_dataset import PytorchClassification2DDataset
 from cai.models.classification.CNN import CNN_Net2D
 from cai.eval.losses.losses_classification import LossCEL
 from cai.agents.classification_agents import ClassificationAgent
 from cai.utils.save_results import save_results, save_only_test_results
+
+# Labels:
+# 0 = Grasper
+# 1 = Bipolar
+# 2 = Hook
+# 3 = Scissors
+# 4 = Clipper
+# 5 = Irrigator
+# 6 = Specimenbag
 
 def Classification_initialize_and_train(config):
     r"""This function selects random images etc. based on the config file
