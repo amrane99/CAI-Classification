@@ -1,0 +1,10 @@
+https://api.telegram.org/bot1569953194:AAGX10oX64LJfxouBLGALcQDCOQITTObZDM/getUpdates
+
+id: 380450269
+bot nr: 1569953194:AAGX10oX64LJfxouBLGALcQDCOQITTObZDM
+
+https://api.telegram.org/bot1569953194:AAGX10oX64LJfxouBLGALcQDCOQITTObZDM/sendMessage?chat_id=380450269&text=hola
+
+chat id: -421262944 
+
+https://api.telegram.org/bot1569953194:AAGX10oX64LJfxouBLGALcQDCOQITTObZDM/sendMessage?chat_id=-421262944&text=hi%20everyone
