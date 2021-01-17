@@ -21,23 +21,33 @@ class ClassificationPathInstance(Instance):
         """
         assert isinstance(x_path, str)
         assert isinstance(y_path, str)
-        x = torchvision.io.read_video(x_path)
+        # torchvision.io.read_video returns tuple of video, audio and infos
+        # Load only first 1094 frames, so the dataset is equal in terms of shape
+        (x, _, _) = torchvision.io.read_video(x_path, start_pts=0, end_pts=1094, pts_unit='sec')
+        # Resize tensor to (NUM_FRAMES x CHANNELS x HEIGHT x WIDTH)
+        x = torch.reshape(x, (x.size()[0], x.size()[3], x.size()[1], x.size()[2]))
         with open(y_path, 'r') as fp:
             y = json.load(fp)
-
-        # Transform label list into torch.tensors
+            
+        # Transform label list into stacked torch.tensors and use only first 1094 for Cholec7,
+        # so the number of frames and labels are all equal.
+        # TODO: Needs to be done in another fashion for the whole dataset --> more elegant way!
+        i = 0
+        y_labels = dict()
         for key, value in y.items():
-            y[key] = torch.tensor(value)
+            if i == 1094:
+                break
+            y_labels[key] = torch.tensor(value)
+            i+=1
+        y_labels = torch.stack(list(y_labels.values()), dim=0)
 
         self.shape = x.shape
-        super().__init__(x=x, y=y, name=name, class_ix=class_ix, 
+        super().__init__(x=x, y=y_labels, name=name, class_ix=class_ix, 
             group_id=group_id)
 
     def get_subject(self):
-        return torchio.Subject(
-            x=self.x,
-            y=self.y
-        )
+        return self.x, self.y
+
 class ClassificationDataset(Dataset):
     r"""Classification Dataset: 
         A Dataset for classification tasks, that specific datasets descend from.

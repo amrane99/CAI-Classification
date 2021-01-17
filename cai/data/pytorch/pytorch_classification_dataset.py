@@ -108,3 +108,29 @@ class PytorchClassification2DDataset(PytorchClassificationDataset):
             x, y = self.__getitem__(idx)
             dl_items.append((x.unsqueeze_(0), y.unsqueeze_(0)))
         return dl_items
+
+class PytorchClassification3DDataset(PytorchClassificationDataset):
+    r"""Each 3D image is an item in the dataloader. If resize=True, the volumes
+    are resized to the specified size, otherwise they are center-cropped and 
+    padded if needed.
+    """
+    def __init__(self, dataset, ix_lst=None, size=(1, 56, 56, 10), 
+        norm_key='rescaling', aug_key='standard', resize=False):
+        if isinstance(size, int):
+            size = (1, size, size, size)
+        super().__init__(dataset=dataset, ix_lst=ix_lst, size=size, 
+            norm_key=norm_key, aug_key=aug_key)
+            
+        assert len(self.size)==4, "Size should be 3D"
+        self.resize=resize
+        self.predictor = pred.Predictor3D(self.instances, size=self.size, 
+            norm=self.norm, resize=resize)
+    
+    def __getitem__(self, idx):
+        r"""Returns x and y values each with shape (c, w, h, d)"""
+        item = self.instances[idx].get_subject()
+        return self.instances[idx].x, self.instances[idx].y
+
+    def get_subject_dataloader(self, subject_ix):
+        x, y = self.__getitem__(subject_ix)
+        return [(x.unsqueeze_(0), y.unsqueeze_(0))]
