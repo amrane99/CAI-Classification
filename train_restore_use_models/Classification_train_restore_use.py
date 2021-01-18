@@ -11,8 +11,8 @@ from cai.data.data import Data
 from cai.data.datasets.ds_cholec80_classification import Cholec80
 from cai.data.datasets.data_splitting import split_dataset
 import cai.utils.load_restore as lr
-from cai.data.pytorch.pytorch_classification_dataset import PytorchClassification3DDataset
-from cai.models.classification.CNN import CNN_Net3D
+from cai.data.pytorch.pytorch_classification_dataset import PytorchClassification2DDataset
+from cai.models.classification.CNN import CNN_Net2D
 from cai.eval.losses.losses_classification import LossCEL
 from cai.agents.classification_agents import ClassificationAgent
 from cai.utils.save_results import save_results, save_only_test_results
@@ -97,7 +97,7 @@ def Classification_initialize_and_train(config):
             for split, data_ixs in splits[ds_name][run_ix].items():
                 if len(data_ixs) > 0: # Sometimes val indexes may be an empty list
                     aug = config['augmentation'] if not('test' in split) else 'none'
-                    datasets[(ds_name, split)] = PytorchClassification3DDataset(ds, 
+                    datasets[(ds_name, split)] = PytorchClassification2DDataset(ds, 
                         ix_lst=data_ixs, size=input_shape, aug_key=aug, 
                         resize=config['resize'])   #TODO: Test with resize=True and without approach from dataset_classification.py
 
@@ -110,7 +110,7 @@ def Classification_initialize_and_train(config):
             num_workers=1)
 
         # 7. Initialize model
-        model = CNN_Net3D(output_features)
+        model = CNN_Net2D(output_features)
         model.to(device)
 
         # 8. Define loss and optimizer
@@ -199,13 +199,13 @@ def Classification_restore_and_train(config):
         # 6. Build train dataloader, and visualize
         dl = DataLoader(datasets[(train_ds)], 
             batch_size=batch_size, shuffle=True,
-            num_workers=1)
+            num_workers=0)
         dl_val = DataLoader(datasets[(val_ds)], 
             batch_size=batch_size, shuffle=True,
             num_workers=1)
 
         # 7. Initialize model
-        model = CNN_Net3D(output_features) 
+        model = CNN_Net2D(output_features) 
         model.to(device)
 
         # 8. Define loss and optimizer

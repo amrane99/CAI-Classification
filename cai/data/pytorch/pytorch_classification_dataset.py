@@ -84,6 +84,20 @@ class PytorchClassification2DDataset(PytorchClassificationDataset):
     def __getitem__(self, idx):
         r"""Returns x values with shape (c, w, h) and y tensor."""
         instance_idx, slice_idx = self.idxs[idx]
+        x, y = self.instances[instance_idx].get_subject()
+        x = x.permute(3, 0, 1, 2)[slice_idx]
+
+        if self.resize:
+            x = trans.resize_2d(x, size=self.size)
+        else:
+            x = trans.centre_crop_pad_2d(x, size=self.size)
+
+        return x, y
+
+
+    def no(self, idx):
+        r"""Returns x values with shape (c, w, h) and y tensor."""
+        instance_idx, slice_idx = self.idxs[idx]
 
         subject = copy.deepcopy(self.instances[instance_idx].get_subject())
         subject.load()
@@ -114,7 +128,7 @@ class PytorchClassification3DDataset(PytorchClassificationDataset):
     are resized to the specified size, otherwise they are center-cropped and 
     padded if needed.
     """
-    def __init__(self, dataset, ix_lst=None, size=(1, 56, 56, 10), 
+    def __init__(self, dataset, ix_lst=None, size=(1, 480, 854, 3), 
         norm_key='rescaling', aug_key='standard', resize=False):
         if isinstance(size, int):
             size = (1, size, size, size)
@@ -125,11 +139,25 @@ class PytorchClassification3DDataset(PytorchClassificationDataset):
         self.resize=resize
         self.predictor = pred.Predictor3D(self.instances, size=self.size, 
             norm=self.norm, resize=resize)
+
+        self.idxs = []
+        for instance_ix, instance in enumerate(self.instances):
+            for slide_ix in range(instance.shape[-1]):
+                self.idxs.append((instance_ix, slide_ix))
     
     def __getitem__(self, idx):
         r"""Returns x and y values each with shape (c, w, h, d)"""
-        item = self.instances[idx].get_subject()
-        return self.instances[idx].x, self.instances[idx].y
+        instance_idx, slice_idx = self.idxs[idx]
+        print(instance_idx, slice_idx)
+        x = self.instances[instance_idx].x[slice_idx]
+        y = self.instances[instance_idx].y[slice_idx]
+        print(x.size())
+        if self.resize:
+            x = trans.resize_3d(x, size=self.size)
+        else:
+            x = trans.centre_crop_pad_3d(x, size=self.size)
+
+        return x, y
 
     def get_subject_dataloader(self, subject_ix):
         x, y = self.__getitem__(subject_ix)

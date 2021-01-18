@@ -78,6 +78,7 @@ class CNN_Net2D(Model):
 
     # Defining the forward pass    
     def forward(self, x):
+        print(x.size())
         yhat = self.cnn_layers(x)
         yhat = yhat.view(yhat.size(0), -1)
         yhat = self.linear_layers(yhat)
@@ -94,30 +95,30 @@ class CNN_Net3D(Model):
         super(CNN_Net3D, self).__init__()
         self.cnn_layers = nn.Sequential(
             # Defining a first 3D convolution layer
-            nn.Conv3d(1095, 2048, kernel_size=3, stride=1, padding=1),
-            nn.BatchNorm3d(2048),
+            nn.Conv3d(1, 4, kernel_size=3, stride=1, padding=1),
+            nn.BatchNorm3d(4),
             nn.ReLU(inplace=True),
             nn.MaxPool3d(kernel_size=2, stride=2),
             # Defining a second 3D convolution layer
-            nn.Conv3d(2048, 1024, kernel_size=3, stride=1, padding=1),
-            nn.BatchNorm3d(1024),
+            nn.Conv3d(4, 8, kernel_size=3, stride=1, padding=1),
+            nn.BatchNorm3d(8),
             nn.ReLU(inplace=True),
             nn.MaxPool3d(kernel_size=2, stride=2),
             # Defining a third 3D convolution layer
-            nn.Conv3d(1024, 512, kernel_size=3, stride=1, padding=1),
-            nn.BatchNorm3d(512),
+            nn.Conv3d(8, 8, kernel_size=3, stride=1, padding=1),
+            nn.BatchNorm3d(8),
             nn.ReLU(inplace=True),
             nn.MaxPool3d(kernel_size=2, stride=2),
             # Defining a forth 3D convolution layer
-            nn.Conv3d(512, 32, kernel_size=3, stride=1, padding=1),
-            nn.BatchNorm3d(32),
+            nn.Conv3d(8, 8, kernel_size=3, stride=1, padding=1),
+            nn.BatchNorm3d(8),
             nn.ReLU(inplace=True),
             nn.MaxPool3d(kernel_size=2, stride=2)
         )
 
         self.linear_layers = nn.Sequential(
             # Output shape of cnn_layers
-            nn.Linear(32 * 18 * 18, num_labels)
+            nn.Linear(8 * 18 * 18, num_labels)
         )
 
     # Defining the forward pass    
