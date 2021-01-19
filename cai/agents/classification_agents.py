@@ -39,18 +39,12 @@ class AlexNetAgent(Agent):
         """
         return external_restore_state(self, states_path, state_name, path_npy_files, optimizer)
 
-    def replicating_image(self, img, nr):
-        replicat_img = img.repeat(1, nr, 1, 1)
-        return replicat_img
-
     def preprocess(self, img_tensor):
         r"""Transforms an image based on the desired input of
         AlexNet.
         """
         preprocess = transforms.Compose([
             transforms.ToPILImage(),
-            transforms.Resize(256),
-            transforms.CenterCrop(256),
             transforms.ToTensor(),
             transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
         ])
