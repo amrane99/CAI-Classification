@@ -62,7 +62,7 @@ class PytorchClassification2DDataset(PytorchClassificationDataset):
     r"""Divides images/videos into 2D slices. If resize=True, the slices are resized to
     the specified size, otherwise they are center-cropped and padded if needed.
     """
-    def __init__(self, dataset, ix_lst=None, size=(1, 256, 256), 
+    def __init__(self, dataset, ix_lst=None, size=(3, 224, 224), 
         norm_key='rescaling', aug_key='standard', resize=False):
         if isinstance(size, int):
             size = (1, size, size)
@@ -86,26 +86,6 @@ class PytorchClassification2DDataset(PytorchClassificationDataset):
         instance_idx, slice_idx = self.idxs[idx]
         x, y = self.instances[instance_idx].get_subject()
         x = x.permute(3, 0, 1, 2)[slice_idx]
-
-        if self.resize:
-            x = trans.resize_2d(x, size=self.size)
-        else:
-            x = trans.centre_crop_pad_2d(x, size=self.size)
-
-        return x, y
-
-
-    def no(self, idx):
-        r"""Returns x values with shape (c, w, h) and y tensor."""
-        instance_idx, slice_idx = self.idxs[idx]
-
-        subject = copy.deepcopy(self.instances[instance_idx].get_subject())
-        subject.load()
-
-        subject = self.transform_subject(subject)
-
-        x = subject.x.tensor.permute(3, 0, 1, 2)[slice_idx]
-        y = subject.y
 
         if self.resize:
             x = trans.resize_2d(x, size=self.size)

@@ -32,13 +32,9 @@ class ClassificationPathInstance(Instance):
         # Transform label list into stacked torch.tensors and use only first 1094 for Cholec7,
         # so the number of frames and labels are all equal.
         # TODO: Needs to be done in another fashion for the whole dataset --> more elegant way!
-        i = 0
         y_labels = dict()
         for key, value in y.items():
-            if i == 1094:
-                break
             y_labels[key] = torch.tensor(value)
-            i+=1
         y_labels = torch.stack(list(y_labels.values()), dim=0)
 
         self.shape = x.shape
