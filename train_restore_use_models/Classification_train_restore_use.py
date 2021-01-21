@@ -4,17 +4,17 @@ import os
 import numpy as np
 import pandas as pd
 import shutil
-from cai.paths import storage_data_path
+from cai.paths import model_result_path, storage_data_path
 from torch.utils.data import DataLoader
 import torch.optim as optim
 from cai.data.data import Data
-from cai.data.datasets.ds_cholec80_classification import Cholec80
+from cai.data.datasets.ds_cholec80_classification import Cholec80, Cholec80Restored
 from cai.data.datasets.data_splitting import split_dataset
 import cai.utils.load_restore as lr
 from cai.data.pytorch.pytorch_classification_dataset import PytorchClassification2DDataset
-from cai.models.classification.CNN import CNN_Net2D
-from cai.eval.losses.losses_classification import LossCEL
-from cai.agents.classification_agents import ClassificationAgent
+import cai.models.classification.CNN as models
+from cai.eval.losses.losses_classification import LossBCE
+import cai.agents.classification_agents as agents
 from cai.utils.save_results import save_results, save_only_test_results
 
 # Labels:
@@ -39,21 +39,25 @@ def Classification_initialize_and_train(config):
     batch_size = config['batch_size'] 
     number_of_tools = config['number_of_tools']
     output_features = number_of_tools
-    augmented = config['augmented']
-    random_slices = config['random_slices']
+    random_frames = config['random_frames']
     nr_videos = config['nr_videos']
-    nr_slices = config['nr_slices']
+    nr_frames = config['nr_frames']
     weight_decay = config['weight_decay']
     save_interval = config['save_interval']
     msg_bot = config['msg_bot']
     bot_msg_interval = config['bot_msg_interval']
     dataset_name = config['dataset']
-    model_name = 'cnn'
+    model_name = config['model']
+    if model_name == 'CNN':
+        model_name = 'CNN_Net2D'
+        agent_name = 'ClassificationAgent'
+    else:
+        agent_name = 'TransNetAgent'
 
 
     # 2. Define data
     data = Data()
-    data.add_dataset(Cholec80())
+    data.add_dataset(Cholec80(random_frames, nr_videos, nr_frames))
     train_ds = (dataset_name, 'train')
     val_ds = (dataset_name, 'val')
     test_ds = (dataset_name, 'test')
@@ -68,7 +72,7 @@ def Classification_initialize_and_train(config):
 
     # Include the model name, Alexnet, CNN, Resnet etc. what has been used
     paths = os.path.join(storage_data_path, 'models', dataset_name+'_'+model_name, 'states')
-    pathr = os.path.join(storage_data_path, 'models', dataset_name+'_'+model_name, 'results')
+    pathr = os.path.join(model_result_path, 'models', dataset_name+'_'+model_name, 'results')
     if not os.path.exists(paths):
         os.makedirs(paths)
     else:
@@ -110,18 +114,18 @@ def Classification_initialize_and_train(config):
             num_workers=1)
 
         # 7. Initialize model
-        model = CNN_Net2D(output_features)
+        model = getattr(models, model_name)(output_features)
         model.to(device)
 
         # 8. Define loss and optimizer
-        loss_f = LossCEL(device=device)
+        loss_f = LossBCE(device=device)
         optimizer = optim.Adam(model.parameters(), lr=config['lr'],
                                weight_decay=weight_decay)
 
         # 9. Train model
         print('Training model in batches of {}..'.format(batch_size))
 
-        agent = ClassificationAgent(model=model, device=device)
+        agent = getattr(agents, agent_name)(model=model, device=device)
         losses_train, losses_cum_train, losses_val, losses_cum_val,\
         accuracy_train, accuracy_det_train, accuracy_val,\
         accuracy_det_val = agent.train(optimizer, loss_f, dl,
@@ -139,8 +143,7 @@ def Classification_initialize_and_train(config):
         losses_test, losses_cum_test, accuracy_test, accuracy_det_test = agent.test(loss_f, dl, msg_bot=msg_bot)
 
     # 12. Save results
-    # Change save results, since noise is not needed !!!
-    save_results(model, noise, model_name, dataset_name, paths, pathr, losses_train, losses_val, accuracy_train,
+    save_results(model, model_name, dataset_name, paths, pathr, losses_train, losses_val, accuracy_train,
                  accuracy_det_train, accuracy_val, accuracy_det_val, losses_test, accuracy_test,
                  accuracy_det_test, losses_cum_train, losses_cum_val)
     
@@ -156,21 +159,25 @@ def Classification_restore_and_train(config):
     batch_size = config['batch_size'] 
     number_of_tools = config['number_of_tools']
     output_features = number_of_tools
-    augmented = config['augmented']
-    random_slices = config['random_slices']
+    random_frames = config['random_frames']
     nr_videos = config['nr_videos']
-    nr_slices = config['nr_slices']
+    nr_frames = config['nr_frames']
     weight_decay = config['weight_decay']
     save_interval = config['save_interval']
     msg_bot = config['msg_bot']
     bot_msg_interval = config['bot_msg_interval']
     dataset_name = config['dataset']
-    model_name = 'cnn'
+    model_name = config['model']
+    if model_name == 'CNN':
+        model_name = 'CNN_Net2D'
+        agent_name = 'ClassificationAgent'
+    else:
+        agent_name = 'TransNetAgent'
 
 
     # 2. Define data to restore dataset
     data = Data()
-    data.add_dataset(Cholec80())
+    data.add_dataset(Cholec80Restored())
     train_ds = (dataset_name, 'train')
     val_ds = (dataset_name, 'val')
     test_ds = (dataset_name, 'test')
@@ -178,7 +185,7 @@ def Classification_restore_and_train(config):
 
     # 3. Restore and define path
     paths = os.path.join(storage_data_path, 'models', dataset_name+'_'+model_name, 'states')
-    pathr = os.path.join(storage_data_path, 'models', dataset_name+'_'+model_name, 'results')
+    pathr = os.path.join(model_result_path, 'models', dataset_name+'_'+model_name, 'results')
     splits = lr.load_json(path=paths, name='data_splits')
     print('Restored existing splits')
 
@@ -205,11 +212,11 @@ def Classification_restore_and_train(config):
             num_workers=1)
 
         # 7. Initialize model
-        model = CNN_Net2D(output_features) 
+        model = getattr(models, model_name)(output_features)
         model.to(device)
 
         # 8. Define loss and optimizer
-        loss_f = LossCEL(device=device)
+        loss_f = LossBCE(device=device)
         optimizer = optim.Adam(model.parameters(), lr=config['lr'],
                                weight_decay=weight_decay)
 
@@ -222,7 +229,7 @@ def Classification_restore_and_train(config):
         state_name += '_' + str(state_names[-1])
 
         print('Restore last saved model from epoch {}..'.format(state_name.split('_')[-1]))
-        agent = ClassificationAgent(model=model, device=device)
+        agent = getattr(agents, agent_name)(model=model, device=device)
         restored, restored_results = agent.restore_state(paths, state_name, optimizer=optimizer)
         if not restored:
             print("Desired state could not be recovered. --> Error!")
@@ -257,8 +264,7 @@ def Classification_restore_and_train(config):
         losses_test, losses_cum_test, accuracy_test, accuracy_det_test = agent.test(loss_f, dl, msg_bot=msg_bot)
 
     # 12. Save results
-    # Change save results, since noise is not needed !!!
-    save_results(model, noise, model_name, dataset_name, paths, pathr, losses_train, losses_val, accuracy_train,
+    save_results(model, model_name, dataset_name, paths, pathr, losses_train, losses_val, accuracy_train,
                  accuracy_det_train, accuracy_val, accuracy_det_val, losses_test, accuracy_test,
                  accuracy_det_test, losses_cum_train, losses_cum_val)
 
@@ -274,20 +280,24 @@ def Classification_test(config):
     batch_size = config['batch_size']
     number_of_tools = config['number_of_tools']
     output_features = number_of_tools
-    augmented = config['augmented']
-    random_slices = config['random_slices']
+    random_frames = config['random_frames']
     nr_videos = config['nr_videos']
-    nr_slices = config['nr_slices']
+    nr_frames = config['nr_frames']
     weight_decay = config['weight_decay']
     msg_bot = config['msg_bot']
     dataset_name = config['dataset']
-    model_name = 'cnn'
+    model_name = config['model']
+    if model_name == 'CNN':
+        model_name = 'CNN_Net2D'
+        agent_name = 'ClassificationAgent'
+    else:
+        agent_name = 'TransNetAgent'
 
 
     # 2. Define data
     data = Data()
-    data.add_dataset(Cholec80())
-    test_ds = ('DecathlonLung', 'test')
+    data.add_dataset(Cholec80(random_frames, nr_videos, nr_frames))
+    test_ds = (dataset_name, 'test')
 
 
     # 3. Split data (0% train, 100% test) and define path
@@ -296,7 +306,7 @@ def Classification_test(config):
         splits[ds_name] = split_dataset(ds, test_ratio=1.0, 
         val_ratio=0, nr_repetitions=config['nr_runs'], 
         cross_validation=config['cross_validation'])
-    pathr = os.path.join(storage_data_path, 'models', dataset_name+'_'+model_name, 'test_results')
+    pathr = os.path.join(model_result_path, 'models', dataset_name+'_'+model, 'test_results')
     if not os.path.exists(pathr):
         os.makedirs(pathr)
     else:
@@ -325,21 +335,20 @@ def Classification_test(config):
             num_workers=1)
 
         # 7. Load pretrained model
-        model = torch.load(os.path.join(storage_data_path, 'models_', model_name, 'model.zip'))
+        model = torch.load(os.path.join(model_result_path, 'models_', model_name, 'model.zip'))
         model.eval()
         model.to(device)
 
         # 8. Define loss and optimizer
-        loss_f = LossCEL(device=device)
+        loss_f = LossBCE(device=device)
         
         # 9. Test model
-        agent = ClassificationAgent(model=model, device=device)
+        agent = getattr(agents, agent_name)(model=model, device=device)
         print('Testing model in batches of {}..'.format(batch_size))
         losses_test, _, accuracy_test, accuracy_det_test = agent.test(loss_f, dl, msg_bot=msg_bot)
 
     # 10. Save results
-    # Change save results, since noise is not needed !!!
-    save_only_test_results(noise, pathr, losses_test, accuracy_test, accuracy_det_test)
+    save_only_test_results(pathr, losses_test, accuracy_test, accuracy_det_test)
 
 def Classification_predict(config):
     r"""This function loads an existing (pretrained) model and makes predictions based on the input file."""

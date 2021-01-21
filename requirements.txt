@@ -7,10 +7,10 @@ matplotlib==3.2.1
 seaborn==0.10.1
 tensorboard==2.2.1
 pylint==2.6.0
-simpleitk==1.2.4
 torch-summary==1.2.0
 torchio==0.17.46
 python-telegram-bot==12.8
 ez_setup
 moviepy
 av
+scikit-learn

@@ -28,11 +28,12 @@ def predict(config):
     Classification_predict(config)
 
 parser = argparse.ArgumentParser(description='Train a specified model for detecting tools used in'+'
-                                              ' surgery based on Cholec80 dataset.')
+                                              ' a surgery video based on Cholec80 dataset.')
+parser.add_argument('--model', choices=['AlexNet', 'ResNet', 'CNN'], required=True,
+                    help='Specify the model you want to use for training.')
 parser.add_argument('--mode', choices=['train', 'test', 'use'], required=True,
                     help='Specify in which mode to use the model. Either train a model or use'+
-                         ' it for predictions.'+
-                         ' Default: The model will be trained.')
+                         ' it for predictions.')
 parser.add_argument('--device', action='store', type=int, nargs=1, default=4,
                     help='Try to train the model on the GPU device with <DEVICE> ID.'+
                          ' Valid IDs: 0, 1, ..., 7'+
@@ -52,8 +53,8 @@ parser.add_argument('--try_catch_repeat', action='store', type=int, nargs=1, def
 # 5. Define configuration dict and train the model
 args = parser.parse_args()
 mode = args.mode
+model = args.model
 ds = 'Cholec80'
-model_name = 'cnn'
 cuda = args.device
 restore = args.restore
 msg_bot = args.use_telegram_bot
@@ -74,22 +75,22 @@ if cuda < 0 or cuda > 7:
 cuda = 'cuda:' + str(cuda)
 
 # nr_videos and nr_slices: Cholec80 -  -->
-# Note: Dataset will be nr_videos x nr_slices big!
-# weight decays: Cholec80 - 0.75
+# Note: Dataset will be nr_videos x nr_frames big!
+# weight decay: Cholec80 - 0.75
 config = {'device':cuda, 'nr_runs': 1, 'cross_validation': False, 
-          'val_ratio': 0.2, 'test_ratio': 0.2, 'input_shape': (1755, 480, 854, 3),
-          'resize': False, 'augmentation': 'none', 'lr': 0.001, 'batch_size': 64,
+          'val_ratio': 0.2, 'test_ratio': 0.2, 'input_shape': (3, 224, 224),
+          'resize': False, 'augmentation': 'none', 'lr': 0.001, 'batch_size': 50,
           'number_of_tools': 8, 'nr_epochs': 300, 
-          'random_slices': True, 'nr_videos': 40, 'nr_slices': 25,
+          'random_frames': True, 'nr_videos': 40, 'nr_frames': 25,
           'weight_decay': 0.75, 'save_interval': 25, 'msg_bot': msg_bot,
-          'bot_msg_interval': 20, 'augmented': True, 'dataset': ds
+          'bot_msg_interval': 20, 'augmented': True, 'dataset': ds, 'model': model
          }
 
 if mode == 'train':
     # 7. Train the model until number of epochs is reached. Send every error 
     # with Telegram Bot if desired, however try to repeat training only the
     # transmitted number of times.
-    dir_name = os.path.join(storage_data_path, 'models', model_name, 'states')
+    dir_name = os.path.join(storage_data_path, 'models', model, 'states')
     if try_catch > 0:
         for i in range(try_catch):
             try:

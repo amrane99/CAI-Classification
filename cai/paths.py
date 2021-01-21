@@ -7,8 +7,12 @@ import os
 storage_path = '/gris/gris-f/homestud/aranem/CAI-Classification-storage'
 storage_data_path = os.path.join(storage_path, 'results')
 
+# Path to save model states and results within the Code base --> Needed GUI
+# No changes necessary
+model_result_path = os.path.join(os.path.abspath(os.getcwd()), 'results')
+
 # Original data paths. TODO: set necessary data paths.
 original_data_paths = {'Cholec80': '/gris/gris-f/homestud/aranem/CAI-Classification-storage/data/Cholec80'}
 
 # Login for Telegram Bot
-telegram_login = {'chat_id': '1434827144', 'token': '1471443210:AAEz1OTGoZMiUCI55dPaDg3vtCojSUPJyIs'}
+telegram_login = {'chat_id': '-421262944', 'token': '1569953194:AAGX10oX64LJfxouBLGALcQDCOQITTObZDM'}
