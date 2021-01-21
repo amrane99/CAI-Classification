@@ -6,7 +6,10 @@
 
 import os
 import shutil
+<<<<<<< HEAD
 import numpy as np
+=======
+>>>>>>> 6192c2bfa88c3375ba21cd95f262a03613b79546
 from cai.utils.load_restore import pkl_dump, pkl_load
 from cai.utils.pytorch.pytorch_load_restore import save_model_state, load_model_state, save_optimizer_state, load_optimizer_state
 
@@ -38,6 +41,7 @@ class Agent:
         """
         pass
 
+<<<<<<< HEAD
     def save_state(self, states_path, state_name, optimizer=None, overwrite=False,
                    losses_train=None, losses_cum_train=None, losses_val=None, 
                    losses_cum_val=None, accuracy_train=None, accuracy_det_train=None,
@@ -45,6 +49,11 @@ class Agent:
         r"""Saves an agent state. Raises an error if the directory exists and 
         overwrite=False. Saves all further results like losses and accuracies as
         .npy files.
+=======
+    def save_state(self, states_path, state_name, optimizer=None, overwrite=False):
+        r"""Saves an agent state. Raises an error if the directory exists and 
+        overwrite=False.
+>>>>>>> 6192c2bfa88c3375ba21cd95f262a03613b79546
         """
         if states_path is not None:
             state_full_path = os.path.join(states_path, state_name)
@@ -57,6 +66,7 @@ class Agent:
             pkl_dump(self.agent_state_dict, 'agent_state_dict', state_full_path)
             if optimizer is not None:
                 save_optimizer_state(optimizer, 'optimizer', state_full_path)
+<<<<<<< HEAD
             if losses_train is not None:
                 np.save(os.path.join(state_full_path, 'losses_train.npy'), np.array(losses_train))
             if losses_cum_train is not None:
@@ -73,12 +83,18 @@ class Agent:
                 np.save(os.path.join(state_full_path, 'accuracy_validation.npy'), np.array(accuracy_val))
             if accuracy_det_val is not None:
                 np.save(os.path.join(state_full_path, 'accuracy_detailed_validation.npy'), np.array(accuracy_det_val))
+=======
+>>>>>>> 6192c2bfa88c3375ba21cd95f262a03613b79546
 
     def restore_state(self, states_path, state_name, optimizer=None):
         r"""Tries to restore a previous agent state, consisting of a model 
         state and the content of agent_state_dict. Returns whether the restore 
+<<<<<<< HEAD
         operation  was successful. Further the results will be loaded as well,
         i.e. losses and accuracies.
+=======
+        operation  was successful.
+>>>>>>> 6192c2bfa88c3375ba21cd95f262a03613b79546
         """
         state_full_path = os.path.join(states_path, state_name)
         try:
@@ -87,6 +103,7 @@ class Agent:
             agent_state_dict = pkl_load('agent_state_dict', state_full_path)
             assert agent_state_dict is not None
             self.agent_state_dict = agent_state_dict
+<<<<<<< HEAD
             if optimizer is not None:
                 load_optimizer_state(optimizer, 'optimizer', state_full_path, device=self.device)
             print("Loading model state dict was successful.")
@@ -103,3 +120,13 @@ class Agent:
         except:
             print('State {} could not be restored'.format(state_name))
             return False, None
+=======
+            if optimizer is not None: 
+                load_optimizer_state(optimizer, 'optimizer', state_full_path, device=self.device)
+            if self.verbose:
+                print('State {} was restored'.format(state_name))
+            return True
+        except:
+            print('State {} could not be restored'.format(state_name))
+            return False
+>>>>>>> 6192c2bfa88c3375ba21cd95f262a03613b79546

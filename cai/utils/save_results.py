@@ -4,15 +4,25 @@ import os
 import numpy as np
 import pandas as pd
 from cai.visualization.plot_results import plot_dataframe
+<<<<<<< HEAD
 from cai.paths import model_result_path
 
 def save_results(model, model_type, set_name, paths, pathr, losses_train, losses_val, accuracy_train,
+=======
+from cai.paths import storage_data_path
+
+def save_results(model, noise, model_type, set_name, paths, pathr, losses_train, losses_val, accuracy_train,
+>>>>>>> 6192c2bfa88c3375ba21cd95f262a03613b79546
                  accuracy_det_train, accuracy_val, accuracy_det_val, losses_test, accuracy_test,
                  accuracy_det_test, losses_cum_train, losses_cum_val):
     r"""This function saves the results from a trained model, i.e. losses and accuracies."""
     print('Save trained model losses and accuracies..')
     torch.save(model.state_dict(), os.path.join(paths, 'model_state_dict.zip'))
+<<<<<<< HEAD
     torch.save(model, os.path.join(model_result_path, 'models', set_name+'_'+model_type, 'model.zip'))
+=======
+    torch.save(model, os.path.join(storage_data_path, 'models', noise+'_'+set_name+'_'+model_type, 'model.zip'))
+>>>>>>> 6192c2bfa88c3375ba21cd95f262a03613b79546
     np.save(os.path.join(pathr, 'losses_train.npy'), np.array(losses_train))
     np.save(os.path.join(pathr, 'losses_cum_train.npy'), np.array(losses_cum_train))
     np.save(os.path.join(pathr, 'losses_validation.npy'), np.array(losses_val))
@@ -49,7 +59,11 @@ def save_results(model, model_type, set_name, paths, pathr, losses_train, losses
         x_name='Batch', y_name='Accuracy', ending='.png', ylog=False, figsize=(10,5),
         xints=int, yints=int)
 
+<<<<<<< HEAD
 def save_only_test_results(path, losses_test, accuracy_test, accuracy_det_test):
+=======
+def save_only_test_results(noise, path, losses_test, accuracy_test, accuracy_det_test):
+>>>>>>> 6192c2bfa88c3375ba21cd95f262a03613b79546
     r"""This function saves the test results from a pretrained model, i.e. losses and accuracies."""
     print('Save pretrained model losses and accuracies on test dataset..')
     np.save(os.path.join(path, 'losses_test.npy'), np.array(losses_test))

@@ -77,7 +77,11 @@ class PytorchClassification2DDataset(PytorchClassificationDataset):
         for instance_ix, instance in enumerate(self.instances):
             for slide_ix in range(instance.shape[-1]):
                 self.idxs.append((instance_ix, slide_ix))
+<<<<<<< HEAD
                 
+=======
+
+>>>>>>> 6192c2bfa88c3375ba21cd95f262a03613b79546
     def __len__(self):
         return len(self.idxs)
 
@@ -86,7 +90,11 @@ class PytorchClassification2DDataset(PytorchClassificationDataset):
         instance_idx, slice_idx = self.idxs[idx]
         x, y = self.instances[instance_idx].get_subject()
         x = x.permute(3, 0, 1, 2)[slice_idx]
+<<<<<<< HEAD
         y = y[slice_idx]
+=======
+
+>>>>>>> 6192c2bfa88c3375ba21cd95f262a03613b79546
         if self.resize:
             x = trans.resize_2d(x, size=self.size)
         else:

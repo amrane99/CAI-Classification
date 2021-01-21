@@ -7,10 +7,18 @@ matplotlib==3.2.1
 seaborn==0.10.1
 tensorboard==2.2.1
 pylint==2.6.0
+<<<<<<< HEAD
+=======
+simpleitk==1.2.4
+>>>>>>> 6192c2bfa88c3375ba21cd95f262a03613b79546
 torch-summary==1.2.0
 torchio==0.17.46
 python-telegram-bot==12.8
 ez_setup
 moviepy
+<<<<<<< HEAD
 av
 scikit-learn
+=======
+av
+>>>>>>> 6192c2bfa88c3375ba21cd95f262a03613b79546

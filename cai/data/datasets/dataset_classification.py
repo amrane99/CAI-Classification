@@ -22,6 +22,7 @@ class ClassificationPathInstance(Instance):
         assert isinstance(x_path, str)
         assert isinstance(y_path, str)
         # torchvision.io.read_video returns tuple of video, audio and infos
+<<<<<<< HEAD
         (x, _, _) = torchvision.io.read_video(x_path)
         # Resize tensor to (CHANNELS x HEIGHT x WIDTH x NUM_FRAMES)
         x = x.permute(3, 1, 2, 0)
@@ -29,6 +30,18 @@ class ClassificationPathInstance(Instance):
             y = json.load(fp)
             
         # Transform label list into stacked torch.tensors
+=======
+        # Load only first 1094 frames, so the dataset is equal in terms of shape
+        (x, _, _) = torchvision.io.read_video(x_path, start_pts=0, end_pts=1094, pts_unit='sec')
+        # Resize tensor to (NUM_FRAMES x CHANNELS x HEIGHT x WIDTH)
+        x = torch.reshape(x, (x.size()[0], x.size()[3], x.size()[1], x.size()[2]))
+        with open(y_path, 'r') as fp:
+            y = json.load(fp)
+            
+        # Transform label list into stacked torch.tensors and use only first 1094 for Cholec7,
+        # so the number of frames and labels are all equal.
+        # TODO: Needs to be done in another fashion for the whole dataset --> more elegant way!
+>>>>>>> 6192c2bfa88c3375ba21cd95f262a03613b79546
         y_labels = dict()
         for key, value in y.items():
             y_labels[key] = torch.tensor(value)
