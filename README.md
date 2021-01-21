@@ -13,11 +13,7 @@ and activate the environment.
 6. Execute ```git update-index --assume-unchanged cai/paths.py``` so that changes in the paths file are not tracked in the repository.
 7. Execute ```pytest``` to test the correct installation. Note that one of the tests will test whether at least one GPU is present, if you do not want to test this, remove the test or ignore the result. The same goes for tests, testing the presence of datasets that should be downloaded in advance.
 
-<<<<<<< HEAD
 When using pylint, torch and numpy, warnings appear. To avoid these, include generated-members=numpy.*, torch.* in the .pylintrc file.
-=======
-When using pylint, torch and numpy warnings appear. To avoid the warnings, include generated-members=numpy.*, torch.* in the .pylintrc file.
->>>>>>> 6192c2bfa88c3375ba21cd95f262a03613b79546
 
 ## Developer
 Please stick to the code style conventions in code_style_conventions.py
