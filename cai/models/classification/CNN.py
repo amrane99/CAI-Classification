@@ -36,12 +36,14 @@ class VGG19BN(Model):
         self.relu = nn.ReLU(inplace=True)
         self.do = nn.Dropout(p=0.5)
         self.lin1 = nn.Linear(1000, num_labels)
+        self.sigmoid = nn.Sigmoid()
         
     def forward(self, x):
         # Reshape input based on batchsize
         yhat = self.vgg(x)
         yhat = yhat.view(yhat.size(0), -1)
         yhat = self.lin1(yhat)
+        yhat = self.sigmoid(yhat)
         return yhat
 
 class ResNet(Model):
@@ -79,20 +81,20 @@ class CNN_Net2D(Model):
             nn.ReLU(inplace=True),
             nn.MaxPool2d(kernel_size=2, stride=2),      #dim: 8x56x56
             # Defining a third 2D convolution layer
-            nn.Conv2d(8, 8, kernel_size=3, stride=1, padding=1),
-            nn.BatchNorm2d(8),
+            nn.Conv2d(8, 16, kernel_size=3, stride=1, padding=1),
+            nn.BatchNorm2d(16),
             nn.ReLU(inplace=True),
-            nn.MaxPool2d(kernel_size=2, stride=2),      #dim: 8x28x28
+            nn.MaxPool2d(kernel_size=2, stride=2),      #dim: 16x28x28
             # Defining a forth 2D convolution layer
-            nn.Conv2d(8, 8, kernel_size=3, stride=1, padding=1),
-            nn.BatchNorm2d(8),
+            nn.Conv2d(16, 16, kernel_size=3, stride=1, padding=1),
+            nn.BatchNorm2d(16),
             nn.ReLU(inplace=True),
-            nn.MaxPool2d(kernel_size=2, stride=2)       #dim: 8x14x14
+            nn.MaxPool2d(kernel_size=2, stride=2)       #dim: 16x14x14
         )
 
         self.linear_layers = nn.Sequential(
             # Output shape of cnn_layers
-            nn.Linear(8 * 14 * 14, num_labels)
+            nn.Linear(16 * 14 * 14, num_labels)
         )
 
         self.sigmoid = nn.Sigmoid()

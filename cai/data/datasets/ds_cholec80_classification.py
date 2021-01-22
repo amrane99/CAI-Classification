@@ -187,12 +187,15 @@ def _extract_images_random(source_path, data_label, folder_name,
         # Extract the video
         video = mpy.VideoFileClip(os.path.join(source_path, filename+'.mp4'))# Get number of frames in the video
         # Calculate the number of frames in the video
-        frames = int(video.fps * video.duration)-1
+        # Substract 2 since the dataset has been downsamlped from 25 fps to 1 fps and the
+        # number of labels is exactly two frames shorter than the video.
+        # --> 2 times video transformation with indexing from 1 results in a difference of 2.
+        frames = int(video.fps * video.duration)-2
         # Get list of random frame IDs
         if nr_frames >= frames:
-            random_frames_idx = list(range(frames))
+            random_frames_idx = list(range(1, frames))
         else:
-            random_frames_idx = random.sample(range(frames), nr_frames)
+            random_frames_idx = random.sample(range(1, frames), nr_frames)
         # Load labels
         with open(os.path.join(source_path, filename+'-tool.json'), 'r') as fp:
             labels = json.load(fp)
@@ -202,8 +205,8 @@ def _extract_images_random(source_path, data_label, folder_name,
         # Select random frames from video and from labels
         random_frames = list()
         for frame_id in random_frames_idx:
-            random_frames.append(mpy.ImageClip(video.get_frame(frame_id * video.fps)).set_duration(1))
-            label_dict[labels_keys[frame_id]] = labels_values[frame_id]
+            random_frames.append(mpy.ImageClip(video.get_frame(frame_id-1 * video.fps)).set_duration(1))
+            label_dict[labels_keys[frame_id-1]] = labels_values[frame_id-1]
 
         # Save random frames as video
         random_video = mpy.concatenate_videoclips(random_frames, method="compose")

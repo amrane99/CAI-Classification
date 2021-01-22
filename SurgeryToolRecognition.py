@@ -75,16 +75,15 @@ if cuda < 0 or cuda > 7:
 cuda = 'cuda:' + str(cuda)
 
 # nr_videos and nr_slices: Cholec80 -  -->
-<<<<<<< HEAD
 # Note: Dataset will be nr_videos x nr_frames big!
 # weight decay: Cholec80 - 0.75
 config = {'device':cuda, 'nr_runs': 1, 'cross_validation': False, 
-          'val_ratio': 0.2, 'test_ratio': 0.2, 'input_shape': (3, 224, 224),
+          'val_ratio': 0.125, 'test_ratio': 0.125, 'input_shape': (3, 224, 224),
           'resize': False, 'augmentation': 'none', 'lr': 0.001, 'batch_size': 50,
-          'number_of_tools': 8, 'nr_epochs': 300, 
-          'random_frames': True, 'nr_videos': 40, 'nr_frames': 25,
+          'number_of_tools': 7, 'nr_epochs': 1,
+          'random_frames': True, 'nr_videos': 80, 'nr_frames': 2000,
           'weight_decay': 0.75, 'save_interval': 25, 'msg_bot': msg_bot,
-          'bot_msg_interval': 20, 'augmented': True, 'dataset': ds, 'model': model
+          'bot_msg_interval': 20, 'dataset': ds, 'model': model
          }
 
 if mode == 'train':
