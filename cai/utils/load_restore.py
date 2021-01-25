@@ -8,7 +8,6 @@ import pickle
 import numpy as np
 import json
 import functools
-import SimpleITK as sitk
 
 # PICKLE
 def pkl_dump(obj, name, path='obj'):
@@ -62,20 +61,6 @@ def load_json(path, name):
         name += '.json'
     with open(os.path.join(path, name), 'r') as json_file:
         return json.load(json_file)
-
-# NIFTY
-def nifty_dump(x, name, path):
-    r"""Save a tensor of numpy array in nifty format."""
-    if 'torch.Tensor' in str(type(x)):
-        x = x.detach().cpu().numpy()
-    if '.nii' not in name:
-        name = name + '.nii.gz'
-    # Remove channels dimension and rotate axis so depth first
-    if len(x.shape) == 4:
-        x = np.moveaxis(x[0], -1, 0)
-    assert len(x.shape) == 3
-    path = os.path.join(path, name)
-    sitk.WriteImage(sitk.GetImageFromArray(x), path)
 
 # OTHERS
 def join_path(list):

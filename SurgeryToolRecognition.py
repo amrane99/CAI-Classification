@@ -4,10 +4,7 @@ import argparse
 import traceback
 from cai.paths import storage_data_path, telegram_login
 from cai.utils.update_bots.telegram_bot import TelegramBot
-from train_restore_use_models.Classification_train_restore_use import Classification_initialize_and_train,
-                                                                      Classification_restore_and_train,
-                                                                      Classification_test,
-                                                                      Classification_predict
+from train_restore_use_models.Classification_train_restore_use import *
 
 # 2. Train the model based on command line arguments
 def train(restore, config):
@@ -27,7 +24,7 @@ def predict(config):
     r"""Predicts values based on config values."""
     Classification_predict(config)
 
-parser = argparse.ArgumentParser(description='Train a specified model for detecting tools used in'+'
+parser = argparse.ArgumentParser(description='Train a specified model for detecting tools used in'+
                                               ' a surgery video based on Cholec80 dataset.')
 parser.add_argument('--model', choices=['AlexNet', 'ResNet', 'CNN'], required=True,
                     help='Specify the model you want to use for training.')
@@ -36,7 +33,7 @@ parser.add_argument('--mode', choices=['train', 'test', 'use'], required=True,
                          ' it for predictions.')
 parser.add_argument('--device', action='store', type=int, nargs=1, default=4,
                     help='Try to train the model on the GPU device with <DEVICE> ID.'+
-                         ' Valid IDs: 0, 1, ..., 7'+
+                         ' Valid IDs: 0, 1, ..., 7. ID -1 would mean to use a CPU.'+
                          ' Default: GPU device with ID 4 will be used.')
 parser.add_argument('--restore', action='store_const', const=True, default=False,
                     help='Restore last model state and continue training from there.'+
@@ -68,13 +65,16 @@ if isinstance(try_catch, list):
 if msg_bot:
     bot = TelegramBot(telegram_login)
 
-if cuda < 0 or cuda > 7:
-    bot.send_msg('GPU device ID out of range (0, ..., 7).')
-    assert False, 'GPU device ID out of range (0, ..., 7).'
+if cuda == -1:
+    cuda = 'cpu'
+else:
+    if cuda < 0 or cuda > 7:
+        bot.send_msg('GPU device ID out of range (0, ..., 7).')
+        assert False, 'GPU device ID out of range (0, ..., 7).'
+    else:
+        cuda = 'cuda:' + str(cuda)
 
-cuda = 'cuda:' + str(cuda)
-
-# nr_videos and nr_slices: Cholec80 -  -->
+# nr_videos and nr_sframes Cholec80 - 80x2000 -->
 # Note: Dataset will be nr_videos x nr_frames big!
 # weight decay: Cholec80 - 0.75
 config = {'device':cuda, 'nr_runs': 1, 'cross_validation': False, 

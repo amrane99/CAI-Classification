@@ -4,11 +4,11 @@
 
 import torch.nn as nn
 import torch
-from mp.models.model import Model
+from cai.models.model import Model
 import torchvision.models as models
 
 # Sigmoid layers are important for the BCELoss, to get multi-hot vectors
-# for multi classification task.
+# for multi classification tasks.
 
 class AlexNet(Model):
     r"""This class represents the AlexNet for image classification."""

@@ -8,7 +8,7 @@
 import copy
 import torch
 import torchio
-import mp.data.pytorch.transformation as trans
+import cai.data.pytorch.transformation as trans
 
 class Predictor():
     r"""A predictor recreates a prediction with the correct dimensions from 

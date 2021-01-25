@@ -7,7 +7,6 @@ import os
 import torch.nn as nn
 import numpy as np
 from torchsummary import summary
-
 from cai.utils.pytorch.pytorch_load_restore import load_model_state, save_model_state
 
 class Model(nn.Module):

@@ -8,7 +8,7 @@
 # ------------------------------------------------------------------------------
 
 import telegram as tel
-from mp.utils.load_restore import load_json, join_path
+from cai.utils.load_restore import load_json, join_path
 
 class TelegramBot():
     r"""Initialize a telegram bot.
