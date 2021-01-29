@@ -119,7 +119,7 @@ class Cholec80Restored(ClassificationDataset):
 def _extract_images(source_path, target_path):
     r"""Extracts videos and saves the modified videos."""
     videos_path = os.path.join(source_path, 'videos')
-    labels_path = os.path.join(source_path, 'tool_annotations')
+    labels_path = os.path.join(source_path, 'tool-annotations')
 
     # Filenames have the form 'videoXX.mp4'
     filenames = [x.split('.')[0] for x in os.listdir(videos_path) if '.mp4' in x
