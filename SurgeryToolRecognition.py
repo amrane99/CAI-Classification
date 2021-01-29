@@ -77,7 +77,7 @@ else:
 # nr_videos and nr_sframes Cholec80 - 80x2000 -->
 # Note: Dataset will be nr_videos x nr_frames big!
 # weight decay: Cholec80 - 0.75
-config = {'device':cuda, 'nr_runs': 1, 'cross_validation': False, 
+config = {'device':cuda, 'nr_runs': 1, 'cross_validation': False,
           'val_ratio': 0.125, 'test_ratio': 0.125, 'input_shape': (3, 224, 224),
           'resize': False, 'augmentation': 'none', 'lr': 0.001, 'batch_size': 50,
           'number_of_tools': 7, 'nr_epochs': 1,
@@ -87,7 +87,7 @@ config = {'device':cuda, 'nr_runs': 1, 'cross_validation': False,
          }
 
 if mode == 'train':
-    # 7. Train the model until number of epochs is reached. Send every error 
+    # 7. Train the model until number of epochs is reached. Send every error
     # with Telegram Bot if desired, however try to repeat training only the
     # transmitted number of times.
     dir_name = os.path.join(storage_data_path, 'models', model, 'states')
@@ -116,13 +116,14 @@ if mode == 'train':
                         restore = True
                 else:
                     # Directory does not exist
+                    print('Directory does not exist therefore: restore -> false')
                     restore = False
 
     else:
         train(restore, config)
 
 if mode == 'test':
-    # 8. Use a pretrained model for predictions and evaluate results. Send every error 
+    # 8. Use a pretrained model for predictions and evaluate results. Send every error
     # with Telegram Bot if desired.
     try:
         test(config)
@@ -133,7 +134,7 @@ if mode == 'test':
             bot.send_msg('Error occured during testing: {}'.format(e))
 
 if mode == 'use':
-    # 9. Use a pretrained model for predictions. Send every error 
+    # 9. Use a pretrained model for predictions. Send every error
     # with Telegram Bot if desired.
     try:
         predict(config)
