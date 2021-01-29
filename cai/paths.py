@@ -12,7 +12,8 @@ storage_data_path = os.path.join(storage_path, 'data')
 model_result_path = os.path.join(os.path.abspath(os.getcwd()), 'results')
 
 # Original data paths. TODO: set necessary data paths.
-original_data_paths = {'example_dataset_name': '../../input'}
+original_data_paths = {'Cholec80': '../../input'}
 
 # Login for Telegram Bot
-telegram_login = {'chat_id': '-421262944', 'token': '1569953194:AAGX10oX64LJfxouBLGALcQDCOQITTObZDM'}
+telegram_login = {'chat_id': '-421262944',
+                  'token': '1569953194:AAGX10oX64LJfxouBLGALcQDCOQITTObZDM'}
