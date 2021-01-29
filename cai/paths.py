@@ -4,8 +4,8 @@
 import os
 
 # Path where intermediate and final results are stored
-storage_path = 'storage'
-storage_data_path = os.path.join(storage_path, 'data')
+storage_path = '../../input'
+storage_data_path = storage_path
 
 # Path to save model states and results within the Code base
 # --> Necessary for GUI, no changes needed
