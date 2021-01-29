@@ -7,12 +7,12 @@ import os
 storage_path = 'storage'
 storage_data_path = os.path.join(storage_path, 'data')
 
-# Path to save model states and results within the Code base 
+# Path to save model states and results within the Code base
 # --> Necessary for GUI, no changes needed
 model_result_path = os.path.join(os.path.abspath(os.getcwd()), 'results')
 
 # Original data paths. TODO: set necessary data paths.
-original_data_paths = {'example_dataset_name': 'example_path'}
+original_data_paths = {'example_dataset_name': '../../input'}
 
 # Login for Telegram Bot
-telegram_login = {'chat_id': 'TODO', 'token': 'TODO'}
+telegram_login = {'chat_id': '-421262944', 'token': '1569953194:AAGX10oX64LJfxouBLGALcQDCOQITTObZDM'}

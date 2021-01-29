@@ -21,7 +21,7 @@ class Cholec80(ClassificationDataset):
                  subset=None, hold_out_ixs=[]):
         assert subset is None, "No subsets for this dataset."
 
-        # Extract necessary paths    
+        # Extract necessary paths
         global_name = 'Cholec80'
         dataset_path = os.path.join(storage_data_path, global_name)
         original_data_path = du.get_original_data_path(global_name)
@@ -38,13 +38,13 @@ class Cholec80(ClassificationDataset):
                                           folder_name, nr_videos,
                                                        nr_frames,
                                                storage_data_path)
-            
+
             # Fetch all random patient/video names that do not begin with '._'
-            video_names_random = set(file_name.split('.mp4')[0] for file_name 
+            video_names_random = set(file_name.split('.mp4')[0] for file_name
                 in os.listdir(t_path) if '._' not in file_name and '.mp4' in file_name)
         else:
             # Fetch all patient/video names that do not begin with '._'
-            video_names = set(file_name.split('.mp4')[0] for file_name 
+            video_names = set(file_name.split('.mp4')[0] for file_name
                 in os.listdir(dataset_path) if '._' not in file_name and '.mp4' in file_name)
 
         # Build instances
@@ -94,9 +94,9 @@ class Cholec80Restored(ClassificationDataset):
         original_data_path = du.get_original_data_path(global_name)
         folder_name = 'random_video_slices'  # For random selected data
         t_path = os.path.join(dataset_path, folder_name)
-        
+
         # Fetch all random patient/video names that do not begin with '._'
-        video_names_random = set(file_name.split('.mp4')[0] for file_name 
+        video_names_random = set(file_name.split('.mp4')[0] for file_name
             in os.listdir(t_path) if '._' not in file_name and '.mp4' in file_name)
 
         # Build instances
@@ -115,11 +115,11 @@ class Cholec80Restored(ClassificationDataset):
 
         super().__init__(instances, name=global_name,
                     modality='CT', nr_channels=1, hold_out_ixs=[])
-                    
+
 def _extract_images(source_path, target_path):
     r"""Extracts videos and saves the modified videos."""
     videos_path = os.path.join(source_path, 'videos')
-    labels_path = os.path.join(source_path, 'tool_annotations')
+    labels_path = os.path.join(source_path, 'tool-annotations')
 
     # Filenames have the form 'videoXX.mp4'
     filenames = [x.split('.')[0] for x in os.listdir(videos_path) if '.mp4' in x
@@ -153,7 +153,7 @@ def _extract_images(source_path, target_path):
                 res.append(int(elem))
             # Divide number of fps by 25 since we reduced the fps from 25 to 1!
             label_dict['Frame: '+str(int(int(res[0])/25))] = res[1:]
-        
+
         with open(os.path.join(target_path, filename+'-tool.json'), 'w') as fp:
             json.dump(label_dict, fp, sort_keys=False, indent=4)
 
