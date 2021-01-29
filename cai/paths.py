@@ -4,7 +4,7 @@
 import os
 
 # Path where intermediate and final results are stored
-storage_path = '../storage'
+storage_path = '../input/dataset/Cholec80'
 storage_data_path = storage_data_path = os.path.join(storage_path, 'data')
 
 # Path to save model states and results within the Code base
