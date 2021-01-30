@@ -90,7 +90,7 @@ config = {'device': cuda, 'nr_runs': 1, 'cross_validation': False,
           'number_of_tools': 7, 'nr_epochs': 30,
           'random_frames': True, 'nr_videos': 37, 'nr_frames': 2000,
           'weight_decay': 0.75, 'save_interval': 25, 'msg_bot': msg_bot,
-          'bot_msg_interval': 20, 'dataset': ds, 'model': model
+          'bot_msg_interval': 10, 'dataset': ds, 'model': model
           }
 
 if mode == 'train':
