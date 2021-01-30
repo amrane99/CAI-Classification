@@ -40,13 +40,13 @@ class TransNetAgent(Agent):
               accuracy=list(), accuracy_detailed=list(), accuracy_val=list(),
               accuracy_val_detailed=list(), save_interval=10,
               msg_bot=True, bot_msg_interval=10):
-        r"""Train a model through its agent. Performs training epochs, 
+        r"""Train a model through its agent. Performs training epochs,
         tracks metrics and saves model states.
         """
         assert start_epoch < nr_epochs, 'Start epoch needs to be smaller than the number of epochs!'
         if msg_bot == True:
-            self.bot.send_msg('Start training the model for {} epochs..'.format(nr_epochs-start_epoch))
-        
+            self.bot.send_msg('Start training the ResNet model for {} epochs..'.format(nr_epochs-start_epoch))
+
         for epoch in range(start_epoch, nr_epochs):
             msg = "Running epoch "
             msg += str(epoch + 1) + " of " + str(nr_epochs) + "."
@@ -103,8 +103,8 @@ class TransNetAgent(Agent):
                 accuracy_val.append([epoch+1, acc_val / idxs_val])
                 accuracy_val_detailed.append(list(zip(results_y_val, results_yhat_val)))
 
-            print(('Epoch --> Loss --> Accuracy: {} --> {:.4} --> {:.4}%.\n'
-                   'Val_Loss --> Val_Accuracy: {:.4} --> {:.4}%.').format(epoch + 1,
+            print(('ResNet: Epoch --> Loss --> Accuracy: {} --> {:.4} --> {:.4}%.\n'
+                   'ResNet: Val_Loss --> Val_Accuracy: {:.4} --> {:.4}%.').format(epoch + 1,
                                                     sum(epoch_loss) / total,
                                                     acc / idxs,
                                                     sum(epoch_loss_val) / total_val,
@@ -123,13 +123,13 @@ class TransNetAgent(Agent):
                                 optimizer, True, losses, losses_cum, losses_val,
                                 losses_cum_val, accuracy, accuracy_detailed, accuracy_val,
                                 accuracy_val_detailed)
-                
+
         # Return losses
         return losses, losses_cum, losses_val, losses_cum_val, accuracy, accuracy_detailed, accuracy_val, accuracy_val_detailed
 
     def test(self, loss_f, test_dataloader, msg_bot=True):
         if msg_bot == True:
-            self.bot.send_msg('Start testing the model..')
+            self.bot.send_msg('Start testing the ResNet model..')
         losses = list()
         accuracy = list()
         accuracy_detailed = list()
@@ -156,8 +156,8 @@ class TransNetAgent(Agent):
         print('Accuracy of the model on the test set: %d %%' % (acc / idxs))
         if msg_bot == True:
             self.bot.send_msg('Testset --> Overall Loss: {:.4}.'.format(losses_cum / total))
-            self.bot.send_msg('Accuracy of the model on the test set: %d %%' % (acc / idxs))
-            
+            self.bot.send_msg('Accuracy of the ResNet model on the test set: %d %%' % (acc / idxs))
+
         # Return losses
         return losses, losses_cum, accuracy, accuracy_detailed
 
@@ -173,13 +173,13 @@ class ClassificationAgent(Agent):
               accuracy=list(), accuracy_detailed=list(), accuracy_val=list(),
               accuracy_val_detailed=list(), save_interval=10,
               msg_bot=True, bot_msg_interval=10):
-        r"""Train a model through its agent. Performs training epochs, 
+        r"""Train a model through its agent. Performs training epochs,
         tracks metrics and saves model states.
         """
         assert start_epoch < nr_epochs, 'Start epoch needs to be smaller than the number of epochs!'
         if msg_bot == True:
             self.bot.send_msg('Start training the model for {} epochs..'.format(nr_epochs-start_epoch))
-            
+
         for epoch in range(start_epoch, nr_epochs):
             msg = "Running epoch "
             msg += str(epoch + 1) + " of " + str(nr_epochs) + "."
@@ -254,7 +254,7 @@ class ClassificationAgent(Agent):
                                 optimizer, True, losses, losses_cum, losses_val,
                                 losses_cum_val, accuracy, accuracy_detailed, accuracy_val,
                                 accuracy_val_detailed)
-                
+
         # Return losses
         return losses, losses_cum, losses_val, losses_cum_val, accuracy, accuracy_detailed, accuracy_val, accuracy_val_detailed
 
