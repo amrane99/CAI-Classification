@@ -10,7 +10,7 @@ import numpy as np
 import random
 from cai.utils.load_restore import join_path
 from cai.data.datasets.dataset_classification import ClassificationDataset, ClassificationPathInstance
-from cai.paths import storage_data_path
+from cai.paths import storage_data_path, pre_data_path
 import cai.data.datasets.dataset_utils as du
 
 
@@ -24,7 +24,7 @@ class Cholec80(ClassificationDataset):
 
         # Extract necessary paths
         global_name = 'Cholec80'
-        dataset_path = os.path.join(storage_data_path, global_name)
+        dataset_path = os.path.join(pre_data_path, global_name)
         original_data_path = du.get_original_data_path(global_name)
         folder_name = 'random_video_slices'  # For random selected data
 
