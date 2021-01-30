@@ -23,7 +23,7 @@ class Cholec80(ClassificationDataset):
         assert subset is None, "No subsets for this dataset."
 
         # Extract necessary paths
-        global_name = 'Cholec80/data'
+        global_name = 'Cholec80'
         dataset_path = os.path.join(storage_data_path, global_name)
         original_data_path = du.get_original_data_path(global_name)
         folder_name = 'random_video_slices'  # For random selected data
