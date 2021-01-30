@@ -161,6 +161,7 @@ class TransNetAgent(Agent):
         # Return losses
         return losses, losses_cum, accuracy, accuracy_detailed
 
+
 class ClassificationAgent(Agent):
     r"""An Agent for CNN models."""
     def __init__(self, *args, **kwargs):

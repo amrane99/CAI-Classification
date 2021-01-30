@@ -185,7 +185,7 @@ def _extract_images_random(source_path, data_label, folder_name,
         msg += str(idx + 1) + " of " + str(len(filenames)) + "."
         print (msg, end = "\r")
         # Extract the video
-        video = mpy.VideoFileClip(os.path.join(source_path, filename+'.mp4'))# Get number of frames in the video
+        video = mpy.VideoFileClip(os.path.join(source_path, filename+'.mp4'))
         # Calculate the number of frames in the video
         # Substract 2 since the dataset has been downsamlped from 25 fps to 1 fps and the
         # number of labels is exactly two frames shorter than the video.

@@ -5,6 +5,7 @@ import traceback
 from cai.paths import storage_data_path, telegram_login
 from cai.utils.update_bots.telegram_bot import TelegramBot
 from train_restore_use_models.Classification_train_restore_use import *
+import cai.gui.gui as GUI
 
 # 2. Train the model based on command line arguments
 def train(restore, config):
@@ -20,17 +21,23 @@ def test(config):
     Classification_test(config)
 
 # 4. Use the model based on command line arguments for predictions
-def predict(config):
+def predict():
     r"""Predicts values based on config values."""
-    Classification_predict(config)
+    Classification_predict()
 
 parser = argparse.ArgumentParser(description='Train a specified model for detecting tools used in'+
                                               ' a surgery video based on Cholec80 dataset.')
-parser.add_argument('--model', choices=['AlexNet', 'ResNet', 'CNN'], required=True,
-                    help='Specify the model you want to use for training.')
-parser.add_argument('--mode', choices=['train', 'test', 'use'], required=True,
-                    help='Specify in which mode to use the model. Either train a model or use'+
-                         ' it for predictions.')
+parser.add_argument('--use_gui', action='store_const', const=True, default=False,
+                    help='Use the GUI for predicting present tools in videos.'+
+                         ' (The GUI can only be used for predictions!).'+
+                         ' Default: No GUI will be used.')
+parser.add_argument('--model', choices=['AlexNet', 'ResNet', 'CNN'], required=False, default='AlexNet',
+                    help='Specify the model you want to use for training.'+
+                         ' Default: The AlexNet model will be used.')
+parser.add_argument('--mode', choices=['train', 'test'], required=False, default='train',
+                    help='Specify in which mode to use the model. Either train a model or test'+
+                         ' a pre-trained version of the model.'+
+                         ' Default: The model will be trained.')
 parser.add_argument('--device', action='store', type=int, nargs=1, default=4,
                     help='Try to train the model on the GPU device with <DEVICE> ID.'+
                          ' Valid IDs: 0, 1, ..., 7. ID -1 would mean to use a CPU.'+
@@ -49,6 +56,7 @@ parser.add_argument('--try_catch_repeat', action='store', type=int, nargs=1, def
 
 # 5. Define configuration dict and train the model
 args = parser.parse_args()
+gui = args.use_gui
 mode = args.mode
 model = args.model
 ds = 'Cholec80'
@@ -85,60 +93,63 @@ config = {'device':cuda, 'nr_runs': 1, 'cross_validation': False,
           'weight_decay': 0.75, 'save_interval': 25, 'msg_bot': msg_bot,
           'bot_msg_interval': 20, 'dataset': ds, 'model': model
          }
+         
+if gui:
+    while True:
+        # Use the GUI, note it is only used for predictions.
+        try:
+            predict()
+        except Exception: # catch *all* exceptions
+            e = traceback.format_exc()
+            print('Error occured during the use of the model: {}'.format(e))
+            error = GUI.ErrorWindow('Error occured', str(e))
+            if not error:
+                sys.exit()
+        
+    
+else:
+    if mode == 'train':
+        # 7. Train the model until number of epochs is reached. Send every error
+        # with Telegram Bot if desired, however try to repeat training only the
+        # transmitted number of times.
+        dir_name = os.path.join(storage_data_path, 'models', model, 'states')
+        if try_catch > 0:
+            for i in range(try_catch):
+                try:
+                    train(restore, config)
+                    # Break loop if training for number epochs is concluded
+                    # Otherwise, a permission denied error or other errors occured
+                    break
+                except Exception: # catch *all* exceptions
+                    e = traceback.format_exc()
+                    print('Error occured during training: {}'.format(e))
+                    if msg_bot:
+                        bot.send_msg('Error occured during training: {}'.format(e))
 
-if mode == 'train':
-    # 7. Train the model until number of epochs is reached. Send every error 
-    # with Telegram Bot if desired, however try to repeat training only the
-    # transmitted number of times.
-    dir_name = os.path.join(storage_data_path, 'models', model, 'states')
-    if try_catch > 0:
-        for i in range(try_catch):
-            try:
-                train(restore, config)
-                # Break loop if training for number epochs is concluded
-                # Otherwise, a permission denied error or other errors occured
-                break
-            except: # catch *all* exceptions
-                e = traceback.format_exc()
-                print('Error occured during training: {}'.format(e))
-                if msg_bot:
-                    bot.send_msg('Error occured during training: {}'.format(e))
-
-                # Only restore, if a model state has already been saved, otherwise Index Error
-                # occurs while trying to extract the highest saved state for restoring a state.
-                # Check if the directory is empty. If so, restore = False, otherwise True.
-                if os.path.exists(dir_name) and os.path.isdir(dir_name):
-                    if len(os.listdir(dir_name)) <= 1:
-                        # Directory only contains json splitting file but no model state!
-                        restore = False
+                    # Only restore, if a model state has already been saved, otherwise Index Error
+                    # occurs while trying to extract the highest saved state for restoring a state.
+                    # Check if the directory is empty. If so, restore = False, otherwise True.
+                    if os.path.exists(dir_name) and os.path.isdir(dir_name):
+                        if len(os.listdir(dir_name)) <= 1:
+                            # Directory only contains json splitting file but no model state!
+                            restore = False
+                        else:
+                            # Directory is not empty
+                            restore = True
                     else:
-                        # Directory is not empty
-                        restore = True
-                else:
-                    # Directory does not exist
-                    restore = False
+                        # Directory does not exist
+                        restore = False
 
-    else:
-        train(restore, config)
+        else:
+            train(restore, config)
 
-if mode == 'test':
-    # 8. Use a pretrained model for predictions and evaluate results. Send every error 
-    # with Telegram Bot if desired.
-    try:
-        test(config)
-    except: # catch *all* exceptions
-        e = traceback.format_exc()
-        print('Error occured during testing: {}'.format(e))
-        if msg_bot:
-            bot.send_msg('Error occured during testing: {}'.format(e))
-
-if mode == 'use':
-    # 9. Use a pretrained model for predictions. Send every error 
-    # with Telegram Bot if desired.
-    try:
-        predict(config)
-    except: # catch *all* exceptions
-        e = traceback.format_exc()
-        print('Error occured during the use of the model: {}'.format(e))
-        if msg_bot:
-            bot.send_msg('Error occured during the use of the model: {}'.format(e))
+    if mode == 'test':
+        # 8. Use a pretrained model for predictions and evaluate results. Send every error
+        # with Telegram Bot if desired.
+        try:
+            test(config)
+        except Exception: # catch *all* exceptions
+            e = traceback.format_exc()
+            print('Error occured during testing: {}'.format(e))
+            if msg_bot:
+                bot.send_msg('Error occured during testing: {}'.format(e))
