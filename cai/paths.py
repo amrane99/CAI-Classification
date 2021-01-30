@@ -11,8 +11,12 @@ storage_data_path = os.path.join(storage_path, 'data')
 # --> Necessary for GUI, no changes needed
 model_result_path = os.path.join(os.path.abspath(os.getcwd()), 'results')
 
+# Path where the preprocessed videos will be stored
+pre_data_path = '/Users/nildenver/Desktop/CAI_Class/Pre_data'
+
 # Original data paths. TODO: set necessary data paths.
-original_data_paths = {'example_dataset_name': 'example_path'}
+original_data_paths = {'Cholec80': '/Users/nildenver/Desktop/CAI_Class/Data'}
 
 # Login for Telegram Bot
-telegram_login = {'chat_id': 'TODO', 'token': 'TODO'}
+telegram_login = {'chat_id': '-421262944',
+                  'token': '1569953194:AAGX10oX64LJfxouBLGALcQDCOQITTObZDM'}
