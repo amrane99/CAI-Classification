@@ -370,6 +370,13 @@ def Classification_predict():
     config_ResNet = {'nr_epochs': 300, 'batch_size': 50, 'learning_rate': 0.001,
                      'weight_decay': 0.75, 'model': 'ResNet', 'test_acc': 80}
     tool = ['Grasper', 'Bipolar', 'Hook', 'Scissors', 'Clipper', 'Irrigator', 'Specimenbag']
+    start_again = False
+    prev_video_path = ''
+    prev_target_path = ''
+    prev_model_names = 'ResNet'
+    prev_cpu = True
+    prev_gpu = False
+    prev_start_id = 0
     
     # !!Still need to be implemented with the backwards step!!
     while True:
@@ -377,169 +384,190 @@ def Classification_predict():
         welcome = gui.WelcomeWindow()
         if not welcome:
             sys.exit()
-        start = gui.StartWindow('')
-        if not start[0]:
-            sys.exit()
-            
-        # 3. Load video
-        video_path = start[1]
-        filename = video_path.split('/')[-1].split('.')[0]
-        load_window, load_progress_bar = gui.LoadVideo()
         
-        event, values = load_window.read(timeout=0, timeout_key="timeout")
-        if event == sg.WIN_CLOSED or event == "Cancel":
-            load_window.CloseNonBlocking()
-            sys.exit()
-        print('Loading the video..')
-        video = mpy.VideoFileClip(video_path)
-        load_progress_bar.update_bar(1)
-        
-        # 4. Extract video features
-        if event == sg.WIN_CLOSED or event == "Cancel":
-            load_window.CloseNonBlocking()
-            sys.exit()
-        fps = int(video.fps)
-        video_length = video.duration
-        frames = int(video.fps * video.duration)-2
-        size = str((video.w, video.h, 3))
-        
-        # Transform video length from seconds into string with format h - m - s
-        result = time.strftime('%H:%M:%S', time.gmtime(video_length)).split(':')
-        length = result[0] + ' h - ' + result[1] + ' m - ' + str(int(result[2])-2) + ' s'
-        load_progress_bar.update_bar(2)
-        load_window.CloseNonBlocking()
-        
-        # Build video information dict
-        video_info = {"path": str(video_path), "frames": str(frames),
-                      "fps": str(fps), "length": str(length),
-                      "size": str(size)}
-        
-        # 5. Build video information file
-        transform = gui.TransformVideo("", video_info)
-        if not transform[0]:
-            sys.exit()
-        
-        # Transform the video and save it if needed
-        print('Transforming the video..')
-        target_path = transform[1]
-        if target_path is not None and fps != 1:
-            transform_window, transform_progress_bar = gui.TransformVideoProgress()
-            event, values = transform_window.read(timeout=0, timeout_key="timeout")
-            if event == sg.WIN_CLOSED or event == "Cancel":
-                transform_window.CloseNonBlocking()
+        while True:
+            start = gui.StartWindow(prev_video_path)
+            if not start[0]:
                 sys.exit()
-            # Reduce fps to 1 and extract video properties
-            video = video.set_fps(1)
-            transform_progress_bar.update_bar(1)
-            # Resize frames to 224x224
-            video = video.resize((224,224))
-            transform_progress_bar.update_bar(2)
-            # Save transformed video --> Works, since target path does already exist at this point
-            video.write_videofile(join_path([target_path, filename+'_transformed.mp4']))
-            # Update number of frames
+                
+            # 3. Load video if path has been changed after backward step
+            video_path = start[1]
+            filename = video_path.split('/')[-1].split('.')[0]
+            load_window, load_progress_bar = gui.LoadVideo()
+            
+            _, _ = load_window.read(timeout=0, timeout_key="timeout")
+            if prev_video_path == video_path:
+                print('Video already in memory..')
+                load_progress_bar.update_bar(1)
+            else:
+                print('Loading the video..')
+                video = mpy.VideoFileClip(video_path)
+                load_progress_bar.update_bar(1)
+            
+            # 4. Extract video features
+            fps = int(video.fps)
+            video_length = video.duration
             frames = int(video.fps * video.duration)-2
-            transform_progress_bar.update_bar(3)
-            transform_window.CloseNonBlocking()
-        
-        # 6. Let user choose model and device
-        model_names = ("ResNet", "AlexNet", "CNN")
-        model_device = gui.ChooseModelAndDevice(model_names[0], model_names, cpu=True, gpu=False)
-        if not model_device[0]:
-            sys.exit()
+            size = str((video.w, video.h, 3))
             
-        # Extract model name and GPU device ID/CPU
-        model_name = model_device[1][0]
-        if model_device[1][1] is not None:
-            device = 'cuda:' + str(model_device[1][1])
-        else:
-            device = 'cpu'
+            # Transform video length from seconds into string with format h - m - s
+            result = time.strftime('%H:%M:%S', time.gmtime(video_length)).split(':')
+            length = result[0] + ' h - ' + result[1] + ' m - ' + str(int(result[2])-2) + ' s'
+            load_progress_bar.update_bar(2)
+            load_window.CloseNonBlocking()
             
-        # Define corresponding agent to model
-        if model_name == 'CNN':
-            model_name = 'CNN_Net2D'
-            
-        # 7. Display model specifications based on model name
-        if model_name == 'CNN_Net2D':
-                model_specs = gui.ModelSpecs(config_CNN_Net2D)
-        if model_name == 'AlexNet':
-                model_specs = gui.ModelSpecs(config_AlexNet)
-        if model_name == 'ResNet':
-                model_specs = gui.ModelSpecs(config_ResNet)
-        if not model_specs[0]:
-            sys.exit()
-            
-        # 8. Make predictions based on users inputs
-        prediction_window, prediction_progress_bar = gui.PredictVideoTools(frames+2)
-        event, values = prediction_window.read(timeout=0, timeout_key="timeout")
-        if event == sg.WIN_CLOSED or event == "Cancel":
-            prediction_window.CloseNonBlocking()
-            sys.exit()
-            
-        # Load pre-trained model structure
-        model_result_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'results', 'models')
-        if device == 'cpu':
-            model = torch.load(os.path.join(model_result_path, 'Cholec80_' + model_name, 'model.zip'), map_location=torch.device('cpu'))
-        else:
-            model = torch.load(os.path.join(model_result_path, 'Cholec80_' + model_name, 'model.zip'))
-        model.eval()
-        model.to(device)
-        prediction_progress_bar.update_bar(1)
-        
-        # Make predictions
-        print('Predicting tools in the video..')
-        if event == sg.WIN_CLOSED or event == "Cancel":
-            prediction_window.CloseNonBlocking()
-            sys.exit()
-            
-        predictions = dict()
-        normalize = transforms.Compose([
-            transforms.ToPILImage(),
-            transforms.ToTensor(),
-            transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
-        ])
-        
-        for idx in range(frames):
-            msg = "Predicting present tools in Frame "
-            msg += str(idx + 1) + " of " + str(frames) + "."
-            print (msg, end = "\r")
-            np_frame = video.get_frame(idx)
-            x = torch.from_numpy(np_frame).permute(2, 0, 1)
-            if model_name != 'CNN':
-                x = normalize(x.cpu().detach())
-            yhat = model(x.unsqueeze(0))
-            yhat = yhat.cpu().detach().numpy()
-            frame_to_sec = time.strftime('%H:%M:%S', time.gmtime(idx+1)).split(':')
-            frame_sec = frame_to_sec[0] + ' h - ' + frame_to_sec[1] + ' m - ' + str(int(frame_to_sec[2])) + ' s'
-            predictions['Frame ' + str(idx+1) + ' --> ' + str(frame_sec) + ':'] = np.round(yhat)[0]
-            prediction_progress_bar.update_bar(idx+2)
-        
-        # 9. Transform predictions and save the result under target path
-        #event, values = prediction_window.read(timeout=0, timeout_key="timeout")
-        if event == sg.WIN_CLOSED or event == "Cancel":
-            prediction_window.CloseNonBlocking()
-            sys.exit()
-        
-        result = ''
-        for key, value in predictions.items():
-            # Transform vector
-            tools = ''
-            for idx, i in enumerate(value):
-                if i == 1:
-                    tools += tool[idx] + ', '
-            # Replace value from dict with transformed one
-            predictions[key] = tools[:-2]
-            result += str(key) + ' ' + str(tools[:-2] + '\n')
-            
-        prediction_progress_bar.update_bar(frames+2)
-        prediction_window.CloseNonBlocking()
-        
-        # 10. Print the results
-        results = gui.ResultWindow(result)
-        
-        # 11. Save result as json in target_paths
-        print("Saving results in form of .json..")
-        with open(os.path.join(target_path, filename+'-tool.json'), 'w') as fp:
-            json.dump(predictions, fp, sort_keys=False, indent=4)
-            
-        if not results:
-            sys.exit()
+            # Build video information dict
+            video_info = {"path": str(video_path), "frames": str(frames),
+                          "fps": str(fps), "length": str(length),
+                          "size": str(size)}
+             
+            while True:
+                # 5. Build video information file
+                transform = gui.TransformVideo(prev_target_path, video_info)
+                if not transform[0]:
+                    sys.exit()
+                if transform[2]:
+                    break
+                
+                # Transform the video and save it if needed
+                target_path = transform[1]
+                
+                if prev_target_path == target_path and os.path.isfile(os.path.join(target_path, filename+'_transformed.mp4')) and int(video.fps) == 1 and int(video.h) == 224 and int(video.w) == 224:
+                    print('Video already transformed..')
+                elif target_path is not None and fps != 1:
+                    print('Transforming the video..')
+                    transform_window, transform_progress_bar = gui.TransformVideoProgress()
+                    _, _ = transform_window.read(timeout=0, timeout_key="timeout")
+                    # Reduce fps to 1 and extract video properties
+                    video = video.set_fps(1)
+                    transform_progress_bar.update_bar(1)
+                    # Resize frames to 224x224
+                    video = video.resize((224,224))
+                    transform_progress_bar.update_bar(2)
+                    # Save transformed video --> Works, since target path does already exist at this point
+                    video.write_videofile(join_path([target_path, filename+'_transformed.mp4']))
+                    # Update number of frames
+                    frames = int(video.fps * video.duration)-2
+                    transform_progress_bar.update_bar(3)
+                    transform_window.CloseNonBlocking()
+                    
+                while True:
+                    # 6. Let user choose model and device
+                    model_names = ("ResNet", "AlexNet", "CNN")
+                    model_device = gui.ChooseModelAndDevice(prev_model_names, model_names, prev_cpu, prev_gpu, prev_start_id)
+                    if not model_device[0]:
+                        sys.exit()
+                    if model_device[2]:
+                        break
+                        
+                    # Extract model name and GPU device ID/CPU
+                    model_name = model_device[1][0]
+                    
+                    if model_device[1][1] is not None:
+                        device = 'cuda:' + str(model_device[1][1])
+                        prev_cpu = False
+                        prev_gpu = True
+                        prev_start_id = model_device[1][1]
+                    else:
+                        device = 'cpu'
+                        prev_cpu = True
+                        prev_gpu = False
+                        
+                    # Define corresponding agent to model
+                    if model_name == 'CNN':
+                        model_name = 'CNN_Net2D'
+                        
+                    while True:
+                        # 7. Display model specifications based on model name
+                        if model_name == 'CNN_Net2D':
+                                model_specs = gui.ModelSpecs(config_CNN_Net2D)
+                        if model_name == 'AlexNet':
+                                model_specs = gui.ModelSpecs(config_AlexNet)
+                        if model_name == 'ResNet':
+                                model_specs = gui.ModelSpecs(config_ResNet)
+                        if not model_specs[0]:
+                            sys.exit()
+                        if model_specs[1]:
+                            break
+                            
+                        # 8. Make predictions based on users inputs
+                        prediction_window, prediction_progress_bar = gui.PredictVideoTools(frames+2)
+                        _, _ = prediction_window.read(timeout=0, timeout_key="timeout")
+                            
+                        # Load pre-trained model structure
+                        model_result_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'results', 'models')
+                        if device == 'cpu':
+                            model = torch.load(os.path.join(model_result_path, 'Cholec80_' + model_name, 'model.zip'), map_location=torch.device('cpu'))
+                        else:
+                            model = torch.load(os.path.join(model_result_path, 'Cholec80_' + model_name, 'model.zip'))
+                        model.eval()
+                        model.to(device)
+                        prediction_progress_bar.update_bar(1)
+                        
+                        # Make predictions
+                        print('Predicting tools in the video..')
+                            
+                        predictions = dict()
+                        normalize = transforms.Compose([
+                            transforms.ToPILImage(),
+                            transforms.ToTensor(),
+                            transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+                        ])
+                        
+                        for idx in range(frames):
+                            msg = "Predicting present tools in Frame "
+                            msg += str(idx + 1) + " of " + str(frames) + "."
+                            print (msg, end = "\r")
+                            np_frame = video.get_frame(idx)
+                            x = torch.from_numpy(np_frame).permute(2, 0, 1)
+                            if model_name != 'CNN':
+                                x = normalize(x.cpu().detach())
+                            yhat = model(x.unsqueeze(0))
+                            yhat = yhat.cpu().detach().numpy()
+                            frame_to_sec = time.strftime('%H:%M:%S', time.gmtime(idx+1)).split(':')
+                            frame_sec = frame_to_sec[0] + ' h - ' + frame_to_sec[1] + ' m - ' + str(int(frame_to_sec[2])) + ' s'
+                            predictions['Frame ' + str(idx+1) + ' --> ' + str(frame_sec) + ':'] = np.round(yhat)[0]
+                            prediction_progress_bar.update_bar(idx+2)
+                        
+                        # 9. Transform predictions and save the result under target path
+                        result = ''
+                        for key, value in predictions.items():
+                            # Transform vector
+                            tools = ''
+                            for idx, i in enumerate(value):
+                                if i == 1:
+                                    tools += tool[idx] + ', '
+                            # Replace value from dict with transformed one
+                            predictions[key] = tools[:-2]
+                            result += str(key) + ' ' + str(tools[:-2] + '\n')
+                            
+                        prediction_progress_bar.update_bar(frames+2)
+                        prediction_window.CloseNonBlocking()
+                        
+                        # 10. Print the results
+                        results = gui.ResultWindow(result)
+                        
+                        # 11. Save result as json in target_paths
+                        print("Saving results in form of .json..")
+                        with open(os.path.join(target_path, filename+'-tool.json'), 'w') as fp:
+                            json.dump(predictions, fp, sort_keys=False, indent=4)
+                            
+                        if not results:
+                            sys.exit()
+                        start_again = True
+                        break
+                            
+                    if model_name == 'CNN_Net2D':
+                        prev_model_names = 'CNN'
+                    else:
+                        prev_model_names = model_name
+                    if start_again:
+                        break
+                prev_target_path = target_path
+                if start_again:
+                    break
+            prev_video_path = video_path
+            if start_again:
+                break
+        if start_again:
+            break

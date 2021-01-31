@@ -10,7 +10,7 @@ def WelcomeWindow():
     sg.theme("SystemDefault")
     layout = [[sg.Text("Hello and Welcome to our System for Surgical Tool Recognition :)", font=("Helvetica", 18))],
               [sg.Image(os.path.join(os.getcwd(), 'cai', 'gui', 'icon.png'), pad = (0, 10))],
-              [sg.Button("Continue", pad=(30, 10)), sg.Button("Exit", pad=(30, 0))]]
+              [sg.Button("Start", pad=(30, 10)), sg.Button("Exit", pad=(30, 0))]]
               
     sg.set_options(text_justification="center")
 
@@ -23,7 +23,7 @@ def WelcomeWindow():
         # presses the OK button
         if event == sg.WIN_CLOSED or event == "Exit":
             return False
-        if event == "Continue":
+        if event == "Start":
             window.close()
             return True
 
@@ -31,12 +31,13 @@ def WelcomeWindow():
 def StartWindow(input):
     r"""Embodies the Start Frame where the user specifies a video path to the video
     for which he wants to predict the surgery tools in it.
+    param: input, a string representing the video path
     """
     # Set layout
     sg.theme("SystemDefault")
     layout = [[sg.Text("Paste/Browse the path to the video for which you want the surgical tools to be predicted:", font=("Helvetica", 14))],
               [sg.Text("Choose a video: "), sg.Input(input), sg.FileBrowse(key="-IN-")],
-              [sg.Button("Submit"), sg.Button("Cancel")]]
+              [sg.Button("Continue"), sg.Button("Cancel")]]
               
     sg.set_options(text_justification="left")
     
@@ -45,11 +46,13 @@ def StartWindow(input):
     # Create an event loop
     while True:
         event, values = window.read()
+        if values["-IN-"] == "":
+            values["-IN-"] = input
         # End program if user closes window or
         # presses the OK button
         if event == sg.WIN_CLOSED or event == "Cancel":
             return False, None
-        if event == "Submit":
+        if event == "Continue":
             if "." not in values[0] or values[0].split(".")[1] != "mp4":
                 sg.popup_error("Your Input", values["-IN-"],
                                "is no valid video path (needs to end with .mp4).", font=("Helvetica", 14))
@@ -71,9 +74,11 @@ def LoadVideo():
     """
     # Set layout
     layout = [[sg.Text("Your video is being loaded", font=("Helvetica", 14))],
-              [sg.ProgressBar(2, orientation="h",
-                              size=(20, 20), key="progress")],
-              [sg.Cancel()]]
+              [sg.ProgressBar(2, orientation="h", bar_color=('black', 'white'),
+                              size=(20, 20), key="progress")]]
+                              
+    sg.set_options(text_justification="center")
+    
     # Create the window
     window = sg.Window("Loading your video", layout, font=("Helvetica", 14))
     progress_bar = window["progress"]
@@ -81,11 +86,12 @@ def LoadVideo():
     return window, progress_bar
     
     
-def TransformVideo(input, video_info):
+def TransformVideo(target, video_info):
     r"""Embodies the Frame that shows extracted information about the video during the load
     process and indicates that the video needs to be transformed for the model, if it is not
     already. The user can specify if he wants to save the video as a specified target path or
     not.
+    param: target, a string representing the target path
     param: video_info, a dict with video information needed for the window
     """
     video_path = [[sg.Text("video at: ", size=(12, 1)), sg.Text(str(video_info["path"]))]]
@@ -101,10 +107,10 @@ def TransformVideo(input, video_info):
     # Check if video needs to be transformed
     if int(video_info["fps"]) != 1 or str(video_info["size"]) != "(224, 224, 3)":
         layout.append([sg.Frame("Transformation needed", trans, title_color="black", font=("Helvetica", 14))])
-        layout.append([sg.Text("Choose a target path: "), sg.Input(input), sg.FolderBrowse(key="-IN-")])
+        layout.append([sg.Text("Choose a target path: "), sg.Input(target), sg.FolderBrowse(key="-IN-")])
         layout.append([sg.Button("Back"), sg.Button("Continue"), sg.Button("Cancel")])
     else:
-        layout.append([sg.Text("Choose a target path: "), sg.Input(input), sg.FolderBrowse(key="-IN-")])
+        layout.append([sg.Text("Choose a target path: "), sg.Input(target), sg.FolderBrowse(key="-IN-")])
         layout.append([sg.Button("Back"), sg.Button("Continue"), sg.Button("Cancel")])
 
     sg.set_options(text_justification="left")
@@ -136,9 +142,11 @@ def TransformVideoProgress():
     """
     # Set layout
     layout = [[sg.Text("Your video is being transformed", font=("Helvetica", 14))],
-              [sg.ProgressBar(3, orientation="h",
-                              size=(20, 20), key="progress")],
-              [sg.Cancel()]]
+              [sg.ProgressBar(3, orientation="h", bar_color=('black', 'white'),
+                              size=(20, 20), key="progress")]]
+                              
+    sg.set_options(text_justification="center")
+    
     # Create the window
     window = sg.Window("Transforming your video", layout, font=("Helvetica", 14))
     progress_bar = window["progress"]
@@ -146,16 +154,20 @@ def TransformVideoProgress():
     return window, progress_bar
     
     
-def ChooseModelAndDevice(selected_model, model_names, cpu, gpu):
+def ChooseModelAndDevice(selected_model, model_names, cpu, gpu, id):
     r"""This window shows the models a user can choose for prediction and a field
     where the device needs to be specified: CPU or GPU.
+    param: selected_model, a string represented the default value
     param: model_names, a tuple with the possible model names, e.g. ("CNN", "ResNet")
+    param: cpu, a bool if the CPU radio button is selected
+    param: gpu, a bool if the GPU radio button is selected
+    param: id, a default number for the GPU device ID
     """
     choose = [[sg.Text("Choose a pre-trained model: ", size=(24, 1)), sg.Combo(values=model_names, key="model", default_value = selected_model)],
               [sg.Text("Choose a device for prediction: ", size=(24, 1)),
                sg.Radio("CPU", 1, key="cpu", default=cpu),
                sg.Radio("GPU", 1, key="gpu", default=gpu)],
-              [sg.Spin([i for i in range(0,8)], initial_value=0, key="gpu_id"), sg.Text("GPU ID")]]
+              [sg.Spin([i for i in range(0,8)], initial_value=id, key="gpu_id"), sg.Text("GPU ID")]]
     
     layout = [[sg.Frame("Your preferences are needed", choose, title_color="black", font=("Helvetica", 14))],
               [sg.Button("Back"), sg.Button("Continue"), sg.Button("Cancel")]]
@@ -229,11 +241,13 @@ def PredictVideoTools(frames):
     """
     # Set layout
     layout = [[sg.Text("The video tools are being predicted", font=("Helvetica", 14))],
-              [sg.ProgressBar(frames, orientation="h",
-                              size=(20, 20), key="progress")],
-              [sg.Cancel()]]
+              [sg.ProgressBar(frames, orientation="h", bar_color=('black', 'white'),
+                              size=(20, 20), key="progress")]]
+                              
+    sg.set_options(text_justification="center")
+    
     # Create the window
-    window = sg.Window("Predict used tools", layout, font=("Helvetica", 14))
+    window = sg.Window("Predict present tools", layout, font=("Helvetica", 14))
     progress_bar = window["progress"]
     
     return window, progress_bar
