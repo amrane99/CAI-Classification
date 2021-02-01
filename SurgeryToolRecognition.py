@@ -74,11 +74,11 @@ cuda = args.device
 restore = args.restore
 msg_bot = args.use_telegram_bot
 try_catch = args.try_catch_repeat
-optimizer = args.optimizer
-weight_decay = args.weight_decay
-learning_rate = args.learning_rate
-batch_size = args.batch_size
-epochs = args.epochs
+optimizer = args.optimizer[0]
+weight_decay = args.weight_decay[0]
+learning_rate = args.learning_rate[0]
+batch_size = args.batch_size[0]
+epochs = args.epochs[0]
 if isinstance(cuda, list):
     cuda = cuda[0]
 if isinstance(try_catch, list):
@@ -102,7 +102,7 @@ else:
 # weight decay: Cholec80 - 0.75
 config = {'device': cuda, 'nr_runs': 1, 'cross_validation': False,
           'val_ratio': 0.125, 'test_ratio': 0.125, 'input_shape': (3, 224, 224),
-          'resize': False, 'augmentation': 'none', 'lr': learning_rate, 'batch_size': 500,
+          'resize': False, 'augmentation': 'none', 'lr': learning_rate, 'batch_size': batch_size,
           'number_of_tools': 7, 'nr_epochs': epochs,
           'random_frames': True, 'nr_videos': 10, 'nr_frames': 2000,
           'weight_decay': weight_decay, 'save_interval': 25, 'msg_bot': msg_bot,
