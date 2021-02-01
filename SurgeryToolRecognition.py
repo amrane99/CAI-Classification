@@ -53,6 +53,15 @@ parser.add_argument('--try_catch_repeat', action='store', type=int, nargs=1, def
                     help='Try to train the model with a restored state, if an error occurs.' +
                          ' Repeat only <TRY_CATCH_REPEAT> number of times.' +
                          ' Default: Do not retry to train after an error occurs.')
+parser.add_argument('--optimizer', choices=['Adam', 'SGD'], default='Adam',
+                    help='Specify the optimizer you want to use for training.')
+parser.add_argument('--weight_decay', action='store', type=float, nargs=1, default=0.75,
+                    help='Specify the weight decay')
+parser.add_argument('--learning_rate', action='store', type=float, nargs=1, default=0.001,
+                    help='Set the learning rate')
+parser.add_argument('--batch_size', action='store', type=int, nargs=1, default=500,
+                    help='Set the batch size')
+
 
 # 5. Define configuration dict and train the model
 args = parser.parse_args()
@@ -63,6 +72,10 @@ cuda = args.device
 restore = args.restore
 msg_bot = args.use_telegram_bot
 try_catch = args.try_catch_repeat
+optimizer = args.optimizer
+weight_decay = args.weight_decay
+learning_rate = args.learning_rate
+batch_size = args.batch_size
 if isinstance(cuda, list):
     cuda = cuda[0]
 if isinstance(try_catch, list):
@@ -86,11 +99,11 @@ else:
 # weight decay: Cholec80 - 0.75
 config = {'device': cuda, 'nr_runs': 1, 'cross_validation': False,
           'val_ratio': 0.125, 'test_ratio': 0.125, 'input_shape': (3, 224, 224),
-          'resize': False, 'augmentation': 'none', 'lr': 0.001, 'batch_size': 100,
+          'resize': False, 'augmentation': 'none', 'lr': learning_rate, 'batch_size': batch_size,
           'number_of_tools': 7, 'nr_epochs': 30,
-          'random_frames': True, 'nr_videos': 37, 'nr_frames': 2000,
-          'weight_decay': 0.75, 'save_interval': 25, 'msg_bot': msg_bot,
-          'bot_msg_interval': 10, 'dataset': ds, 'model': model
+          'random_frames': True, 'nr_videos': 10, 'nr_frames': 2000,
+          'weight_decay': weight_decay, 'save_interval': 25, 'msg_bot': msg_bot,
+          'bot_msg_interval': 5, 'dataset': ds, 'model': model, 'optimizer': optimizer
           }
 
 if mode == 'train':
