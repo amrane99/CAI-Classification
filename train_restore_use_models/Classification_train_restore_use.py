@@ -126,8 +126,8 @@ def Classification_initialize_and_train(config):
             optimizer = optim.Adam(model.parameters(), lr=config['lr'],
                                    weight_decay=weight_decay)
         elif opti == 'SGD':
-            optimizer = optim.Adam(model.parameters(), lr=config['lr'],
-                                   weight_decay=weight_decay)
+            optimizer = optim.SGD(model.parameters(), lr=config['lr'],
+                                  weight_decay=weight_decay)
         else:
             optimizer = optim.Adam(model.parameters(), lr=config['lr'],
                                    weight_decay=weight_decay)
@@ -234,8 +234,8 @@ def Classification_restore_and_train(config):
             optimizer = optim.Adam(model.parameters(), lr=config['lr'],
                                    weight_decay=weight_decay)
         elif opti == 'SGD':
-            optimizer = optim.Adam(model.parameters(), lr=config['lr'],
-                                   weight_decay=weight_decay)
+            optimizer = optim.SGD(model.parameters(), lr=config['lr'],
+                                  weight_decay=weight_decay)
         else:
             optimizer = optim.Adam(model.parameters(), lr=config['lr'],
                                    weight_decay=weight_decay)
