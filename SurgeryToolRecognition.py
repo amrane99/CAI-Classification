@@ -61,6 +61,8 @@ parser.add_argument('--learning_rate', action='store', type=float, nargs=1, defa
                     help='Set the learning rate')
 parser.add_argument('--batch_size', action='store', type=int, nargs=1, default=500,
                     help='Set the batch size')
+parser.add_argument('--epochs', action='store', type=int, nargs=1, default=30,
+                    help='Set the number of epochs')
 
 
 # 5. Define configuration dict and train the model
@@ -100,7 +102,7 @@ else:
 config = {'device': cuda, 'nr_runs': 1, 'cross_validation': False,
           'val_ratio': 0.125, 'test_ratio': 0.125, 'input_shape': (3, 224, 224),
           'resize': False, 'augmentation': 'none', 'lr': learning_rate, 'batch_size': batch_size,
-          'number_of_tools': 7, 'nr_epochs': 30,
+          'number_of_tools': 7, 'nr_epochs': epochs,
           'random_frames': True, 'nr_videos': 10, 'nr_frames': 2000,
           'weight_decay': weight_decay, 'save_interval': 25, 'msg_bot': msg_bot,
           'bot_msg_interval': 5, 'dataset': ds, 'model': model, 'optimizer': optimizer
