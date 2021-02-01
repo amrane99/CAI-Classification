@@ -19,7 +19,7 @@ class AlexNet(Model):
         self.alexnet.classifier[-1] = nn.Linear(classifier_input, num_labels)
         self.alexnet.eval()
         self.sigmoid = nn.Sigmoid()
-        
+
     def forward(self, x):
         # Reshape input based on batchsize
         yhat = self.alexnet(x)
@@ -37,7 +37,7 @@ class VGG19BN(Model):
         self.do = nn.Dropout(p=0.5)
         self.lin1 = nn.Linear(1000, num_labels)
         self.sigmoid = nn.Sigmoid()
-        
+
     def forward(self, x):
         # Reshape input based on batchsize
         yhat = self.vgg(x)
@@ -51,18 +51,21 @@ class ResNet(Model):
     def __init__(self, num_labels):
         super(ResNet, self).__init__()
         self.resnet = models.resnet18(pretrained=True)
+        # Use Feature Extraction instead of finetuning
+        for param in self.resnet.parameters():
+            param.requires_grad = False
         classifier_input = self.resnet.fc.in_features
         self.resnet.fc = nn.Linear(classifier_input, num_labels)
         self.resnet.eval()
         self.sigmoid = nn.Sigmoid()
-        
+
     def forward(self, x):
         # Reshape input based on batchsize
         yhat = self.resnet(x)
         yhat = self.sigmoid(yhat)
         return yhat
 
-class CNN_Net2D(Model):   
+class CNN_Net2D(Model):
     r"""This class represents a CNN for 2D image classification,
     detecting tools in video frames.
     The input image needs to have the size 3x224x224. Otherwise the
@@ -99,7 +102,7 @@ class CNN_Net2D(Model):
 
         self.sigmoid = nn.Sigmoid()
 
-    # Defining the forward pass    
+    # Defining the forward pass
     def forward(self, x):
         yhat = self.cnn_layers(x)
         yhat = yhat.view(yhat.size(0), -1)
