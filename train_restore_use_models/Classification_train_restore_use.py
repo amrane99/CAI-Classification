@@ -133,7 +133,7 @@ def Classification_initialize_and_train(config):
                                    weight_decay=weight_decay)
 
         # 9. Train model
-        print('Training model in batches of {}..'.format(batch_size))
+        print('Training ResNet model in batches of {}..'.format(batch_size))
 
         agent = getattr(agents, agent_name)(model=model, device=device)
         losses_train, losses_cum_train, losses_val, losses_cum_val,\
@@ -149,7 +149,7 @@ def Classification_initialize_and_train(config):
                         batch_size=batch_size, shuffle=True)
 
         # 11. Test model
-        print('Testing model in batches of {}..'.format(batch_size))
+        print('Testing ResNet model in batches of {}..'.format(batch_size))
         losses_test, losses_cum_test, accuracy_test, accuracy_det_test = agent.test(
             loss_f, dl, msg_bot=msg_bot)
 

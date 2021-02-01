@@ -110,7 +110,7 @@ class TransNetAgent(Agent):
                                                     sum(epoch_loss_val) / total_val,
                                                     acc_val / idxs_val))
             if (epoch + 1) % bot_msg_interval == 0 and msg_bot:
-                self.bot.send_msg(('Epoch --> Loss --> Accuracy: {} --> {:.4} --> {:.4}%.\n'
+                self.bot.send_msg(('ResNet: Epoch --> Loss --> Accuracy: {} --> {:.4} --> {:.4}%.\n'
                                    'Val_Loss --> Val_Accuracy: {:.4} --> {:.4}%.').format(epoch + 1,
                                                                     sum(epoch_loss) / total,
                                                                     acc / idxs,
@@ -152,11 +152,11 @@ class TransNetAgent(Agent):
                 accuracy.append([idx+1, 100 * accuracy_score(y.cpu().detach().numpy(), mod_yhat)])
                 accuracy_detailed.extend(list(zip(y.cpu().detach().numpy().tolist(),
                                                   mod_yhat.cpu().detach().numpy().tolist())))
-        print('Testset --> Overall Loss: {:.4}.'.format(losses_cum / total))
-        print('Accuracy of the model on the test set: %d %%' % (acc / idxs))
+        print('ResNet: Testset --> Overall Loss: {:.4}.'.format(losses_cum / total))
+        print('ResNet: Accuracy of the model on the test set: %d %%' % (acc / idxs))
         if msg_bot == True:
-            self.bot.send_msg('Testset --> Overall Loss: {:.4}.'.format(losses_cum / total))
-            self.bot.send_msg('Accuracy of the ResNet model on the test set: %d %%' % (acc / idxs))
+            self.bot.send_msg('ResNet: Testset --> Overall Loss: {:.4}.'.format(losses_cum / total))
+            self.bot.send_msg('ResNet: Accuracy of the ResNet model on the test set: %d %%' % (acc / idxs))
 
         # Return losses
         return losses, losses_cum, accuracy, accuracy_detailed
