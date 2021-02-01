@@ -78,6 +78,7 @@ optimizer = args.optimizer
 weight_decay = args.weight_decay
 learning_rate = args.learning_rate
 batch_size = args.batch_size
+epochs = args.epochs
 if isinstance(cuda, list):
     cuda = cuda[0]
 if isinstance(try_catch, list):
