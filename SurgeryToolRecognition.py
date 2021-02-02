@@ -33,7 +33,7 @@ def predict(config):
 
 parser = argparse.ArgumentParser(description='Train a specified model for detecting tools used in' +
                                  ' a surgery video based on Cholec80 dataset.')
-parser.add_argument('--model', choices=['AlexNet', 'ResNet', 'ResNet50','CNN'], required=True,
+parser.add_argument('--model', choices=['AlexNet', 'ResNet', 'ResNet50', 'CNN'], required=True,
                     help='Specify the model you want to use for training.')
 parser.add_argument('--mode', choices=['train', 'test', 'use'], required=True,
                     help='Specify in which mode to use the model. Either train a model or use' +
@@ -63,7 +63,7 @@ parser.add_argument('--batch_size', action='store', type=int, nargs=1, default=5
                     help='Set the batch size')
 parser.add_argument('--epochs', action='store', type=int, nargs=1, default=30,
                     help='Set the number of epochs')
-parser.add_argument('--feature_extraction', action='store_const', const=True, default=False,
+parser.add_argument('--feature_extraction', action='store_const', default=False,
                     help='Set to true if only the FC-Layers should be retrained')
 
 
@@ -81,7 +81,7 @@ weight_decay = args.weight_decay[0]
 learning_rate = args.learning_rate[0]
 batch_size = args.batch_size[0]
 epochs = args.epochs[0]
-feature_extraction=args.feature_extraction
+feature_extraction = args.feature_extraction
 if isinstance(cuda, list):
     cuda = cuda[0]
 if isinstance(try_catch, list):
