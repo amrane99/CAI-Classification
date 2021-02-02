@@ -77,7 +77,7 @@ class ResNet50(Model):
     r"""This class represents the ResNet with 50 layers for image classification."""
 
     def __init__(self, num_labels, feature_extraction):
-        super(ResNet, self).__init__()
+        super(ResNet50, self).__init__()
         self.resnet = models.resnet50(pretrained=True)
         # Use Feature Extraction instead of finetuning
         if feature_extraction:
