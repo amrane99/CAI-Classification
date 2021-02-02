@@ -50,7 +50,7 @@ def Classification_initialize_and_train(config):
     bot_msg_interval = config['bot_msg_interval']
     dataset_name = config['dataset']
     model_name = config['model']
-    feature_extraction = confiq['feature_extraction']
+    feature_extraction = config['feature_extraction']
     if model_name == 'CNN':
         model_name = 'CNN_Net2D'
         agent_name = 'ClassificationAgent'
@@ -182,6 +182,7 @@ def Classification_restore_and_train(config):
     bot_msg_interval = config['bot_msg_interval']
     dataset_name = config['dataset']
     model_name = config['model']
+    feature_extraction = config['feature_extraction']
     if model_name == 'CNN':
         model_name = 'CNN_Net2D'
         agent_name = 'ClassificationAgent'
