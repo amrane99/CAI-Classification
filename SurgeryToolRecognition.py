@@ -63,7 +63,7 @@ parser.add_argument('--batch_size', action='store', type=int, nargs=1, default=5
                     help='Set the batch size')
 parser.add_argument('--epochs', action='store', type=int, nargs=1, default=30,
                     help='Set the number of epochs')
-parser.add_argument('--feature_extraction', action='store_const', default=False,
+parser.add_argument('--feature_extraction', action='store', type=bool, default=False,
                     help='Set to true if only the FC-Layers should be retrained')
 
 
