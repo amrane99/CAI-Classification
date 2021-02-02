@@ -80,10 +80,10 @@ else:
 config = {'device':cuda, 'nr_runs': 1, 'cross_validation': False, 
           'val_ratio': 0.125, 'test_ratio': 0.125, 'input_shape': (3, 224, 224),
           'resize': False, 'augmentation': 'none', 'lr': 0.0001, 'batch_size': 32,
-          'number_of_tools': 7, 'nr_epochs': 10,
+          'number_of_tools': 7, 'nr_epochs': 15,
           'random_frames': True, 'nr_videos': 37, 'nr_frames': 2000,
           'weight_decay': 0.001, 'save_interval': 10, 'msg_bot': msg_bot,
-          'bot_msg_interval': 2, 'dataset': ds, 'model': model
+          'bot_msg_interval': 1, 'dataset': ds, 'model': model
          }
 
 if mode == 'train':
