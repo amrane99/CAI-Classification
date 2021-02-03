@@ -158,7 +158,7 @@ def ChooseModelAndDevice(selected_model, model_names, cpu, gpu, id):
     r"""This window shows the models a user can choose for prediction and a field
     where the device needs to be specified: CPU or GPU.
     param: selected_model, a string represented the default value
-    param: model_names, a tuple with the possible model names, e.g. ("CNN", "ResNet")
+    param: model_names, a tuple with the possible model names, e.g. ("CNN", "AlexNet")
     param: cpu, a bool if the CPU radio button is selected
     param: gpu, a bool if the GPU radio button is selected
     param: id, a default number for the GPU device ID
@@ -197,17 +197,17 @@ def ModelSpecs(config):
     r"""This window shows the parameters with which the model has been trained.
     param: config, a dict with information needed for the window
     """
-    choosen_model = [[sg.Text("model: ", size=(12, 1)), sg.Text(str(config["model"]))]]
-    command_line_parms = [[sg.Text("dataset: ", size=(12, 1)), sg.Text("Cholec80")],
-                          [sg.Text("number of tools: ", size=(12, 1)), sg.Text("7", size=(6, 1))],
-                          [sg.Text("nr_epochs: ", size=(11, 1)), sg.Text("  "+str(config["nr_epochs"]), size=(6, 1)), sg.Text("  batch_size: ", size=(11, 1)), sg.Text("   "+str(config["batch_size"]), size=(6, 1))],
-                          [sg.Text("loss: ", size=(12, 1)), sg.Text("Binary Cross Entropy Loss")],
-                          [sg.Text("val_ratio: ", size=(12, 1)), sg.Text("0.125", size=(6, 1)), sg.Text("test_ratio: ", size=(12, 1)),
+    choosen_model = [[sg.Text("model: ", size=(13, 1)), sg.Text(str(config["model"]))]]
+    command_line_parms = [[sg.Text("dataset: ", size=(13, 1)), sg.Text("Cholec80")],
+                          [sg.Text("number of tools:", size=(13, 1)), sg.Text("7", size=(6, 1))],
+                          [sg.Text("nr_epochs: ", size=(12, 1)), sg.Text("  "+str(config["nr_epochs"]), size=(6, 1)), sg.Text("  batch_size: ", size=(12, 1)), sg.Text("   "+str(config["batch_size"]), size=(6, 1))],
+                          [sg.Text("loss: ", size=(13, 1)), sg.Text("Binary Cross Entropy Loss")],
+                          [sg.Text("val_ratio: ", size=(13, 1)), sg.Text("0.125", size=(6, 1)), sg.Text("test_ratio: ", size=(13, 1)),
                            sg.Text("0.125", size=(6, 1))],
-                          [sg.Text("learning_rate: ", size=(12, 1)), sg.Text(str(config["learning_rate"]), size=(6, 1)), sg.Text("weight_decay: ", size=(12, 1)), sg.Text(str(config["weight_decay"]), size=(8, 1))]]
-    video_specs = [[sg.Text("nr_videos: ", size=(12, 1)), sg.Text("80", size=(6, 1))],
-                   [sg.Text("nr_frames: ", size=(12, 1)), sg.Text("2000", size=(6, 1))],
-                   [sg.Text("frame_size: ", size=(12, 1)), sg.Text("(224, 224, 3)", size=(10, 1))]]
+                          [sg.Text("learning_rate: ", size=(13, 1)), sg.Text(str(config["learning_rate"]), size=(6, 1)), sg.Text("weight_decay: ", size=(13, 1)), sg.Text(str(config["weight_decay"]), size=(8, 1))]]
+    video_specs = [[sg.Text("nr_videos: ", size=(13, 1)), sg.Text("80", size=(6, 1))],
+                   [sg.Text("nr_frames: ", size=(13, 1)), sg.Text("2000", size=(6, 1))],
+                   [sg.Text("frame_size: ", size=(13, 1)), sg.Text("(224, 224, 3)", size=(10, 1))]]
     accuracy = [[sg.Text("Test accuracy of the model: ", size=(24, 1)), sg.Text(str(config["test_acc"])+"%", size=(6, 1))]]
 
     layout = [[sg.Frame("Your choosen model for the prediction", choosen_model, title_color="black", font=("Helvetica", 14))],

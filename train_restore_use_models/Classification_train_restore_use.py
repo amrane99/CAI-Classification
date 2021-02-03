@@ -56,11 +56,7 @@ def Classification_initialize_and_train(config):
     bot_msg_interval = config['bot_msg_interval']
     dataset_name = config['dataset']
     model_name = config['model']
-    if model_name == 'CNN':
-        model_name = 'CNN_Net2D'
-        agent_name = 'ClassificationAgent'
-    else:
-        agent_name = 'TransNetAgent'
+    agent_name = 'TransNetAgent'
 
 
     # 2. Define data
@@ -176,11 +172,7 @@ def Classification_restore_and_train(config):
     bot_msg_interval = config['bot_msg_interval']
     dataset_name = config['dataset']
     model_name = config['model']
-    if model_name == 'CNN':
-        model_name = 'CNN_Net2D'
-        agent_name = 'ClassificationAgent'
-    else:
-        agent_name = 'TransNetAgent'
+    agent_name = 'TransNetAgent'
 
 
     # 2. Define data to restore dataset
@@ -363,17 +355,13 @@ def Classification_predict():
     in an interactive way using the implemented GUI."""
     
     # Config dicts for each possible model and tool list for mapping
-    config_CNN_Net2D = {'nr_epochs': 300, 'batch_size': 50, 'learning_rate': 0.001,
-                        'weight_decay': 0.75, 'model': 'CNN', 'test_acc': 80}
     config_AlexNet = {'nr_epochs': 300, 'batch_size': 50, 'learning_rate': 0.001,
                       'weight_decay': 0.75, 'model': 'AlexNet', 'test_acc': 80}
-    config_ResNet = {'nr_epochs': 300, 'batch_size': 50, 'learning_rate': 0.001,
-                     'weight_decay': 0.75, 'model': 'ResNet', 'test_acc': 80}
     tool = ['Grasper', 'Bipolar', 'Hook', 'Scissors', 'Clipper', 'Irrigator', 'Specimenbag']
     start_again = False
     prev_video_path = ''
     prev_target_path = ''
-    prev_model_names = 'ResNet'
+    prev_model_names = 'AlexNet'
     prev_cpu = True
     prev_gpu = False
     prev_start_id = 0
@@ -453,7 +441,7 @@ def Classification_predict():
                     
                 while True:
                     # 6. Let user choose model and device
-                    model_names = ("ResNet", "AlexNet", "CNN")
+                    model_names = ('AlexNet', 'ResNet -- not yet implemented')
                     model_device = gui.ChooseModelAndDevice(prev_model_names, model_names, prev_cpu, prev_gpu, prev_start_id)
                     if not model_device[0]:
                         sys.exit()
@@ -473,18 +461,10 @@ def Classification_predict():
                         prev_cpu = True
                         prev_gpu = False
                         
-                    # Define corresponding agent to model
-                    if model_name == 'CNN':
-                        model_name = 'CNN_Net2D'
-                        
                     while True:
                         # 7. Display model specifications based on model name
-                        if model_name == 'CNN_Net2D':
-                                model_specs = gui.ModelSpecs(config_CNN_Net2D)
                         if model_name == 'AlexNet':
-                                model_specs = gui.ModelSpecs(config_AlexNet)
-                        if model_name == 'ResNet':
-                                model_specs = gui.ModelSpecs(config_ResNet)
+                            model_specs = gui.ModelSpecs(config_AlexNet)
                         if not model_specs[0]:
                             sys.exit()
                         if model_specs[1]:
@@ -520,8 +500,8 @@ def Classification_predict():
                             print (msg, end = "\r")
                             np_frame = video.get_frame(idx)
                             x = torch.from_numpy(np_frame).permute(2, 0, 1)
-                            if model_name != 'CNN':
-                                x = normalize(x.cpu().detach())
+                            # Normalization only necessary for transfer learned models
+                            x = normalize(x.cpu().detach())
                             yhat = model(x.unsqueeze(0))
                             yhat = yhat.cpu().detach().numpy()
                             frame_to_sec = time.strftime('%H:%M:%S', time.gmtime(idx+1)).split(':')
@@ -567,7 +547,3 @@ def Classification_predict():
                 if start_again:
                     break
             prev_video_path = video_path
-            if start_again:
-                break
-        if start_again:
-            break
