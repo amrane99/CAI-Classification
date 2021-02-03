@@ -1,5 +1,5 @@
 # ------------------------------------------------------------------------------
-# A group of cnn/classification agents.
+# A group of classification agents.
 # ------------------------------------------------------------------------------
 
 from cai.agents.agent import Agent
@@ -161,9 +161,8 @@ class TransNetAgent(Agent):
         # Return losses
         return losses, losses_cum, accuracy, accuracy_detailed
 
-
-class ClassificationAgent(Agent):
-    r"""An Agent for CNN models."""
+class NonTransNetAgent(Agent):
+    r"""An Agent for models that do not use transfer learning. """
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.bot = TelegramBot(telegram_login)
@@ -174,7 +173,7 @@ class ClassificationAgent(Agent):
               accuracy=list(), accuracy_detailed=list(), accuracy_val=list(),
               accuracy_val_detailed=list(), save_interval=10,
               msg_bot=True, bot_msg_interval=10):
-        r"""Train a model through its agent. Performs training epochs, 
+        r"""Train a model through its agent. Performs training epochs,
         tracks metrics and saves model states.
         """
         assert start_epoch < nr_epochs, 'Start epoch needs to be smaller than the number of epochs!'

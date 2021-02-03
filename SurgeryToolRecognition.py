@@ -31,7 +31,7 @@ parser.add_argument('--use_gui', action='store_const', const=True, default=False
                     help='Use the GUI for predicting present tools in videos.'+
                          ' (The GUI can only be used for predictions!).'+
                          ' Default: No GUI will be used.')
-parser.add_argument('--model', choices=['AlexNet', 'ResNet', 'CNN'], required=False, default='AlexNet',
+parser.add_argument('--model', choices=['AlexNet', 'ResNet'], required=False, default='AlexNet',
                     help='Specify the model you want to use for training.'+
                          ' Default: The AlexNet model will be used.')
 parser.add_argument('--mode', choices=['train', 'test'], required=False, default='train',
@@ -82,18 +82,29 @@ else:
     else:
         cuda = 'cuda:' + str(cuda)
 
-# nr_videos and nr_sframes Cholec80 - 80x2000 -->
+# nr_videos and nr_frames Cholec80 - 80x2000 -->
 # Note: Dataset will be nr_videos x nr_frames big!
 # weight decay: Cholec80 - 0.75
 config = {'device':cuda, 'nr_runs': 1, 'cross_validation': False, 
-          'val_ratio': 0.125, 'test_ratio': 0.125, 'input_shape': (3, 224, 224),
+          'val_ratio': 0.12, 'test_ratio': 0.08, 'input_shape': (3, 224, 224),
           'resize': False, 'augmentation': 'none', 'lr': 0.001, 'batch_size': 50,
           'number_of_tools': 7, 'nr_epochs': 1,
-          'random_frames': True, 'nr_videos': 80, 'nr_frames': 2000,
+          'random_frames': True, 'nr_videos': 75, 'nr_frames': 2000,
           'weight_decay': 0.75, 'save_interval': 25, 'msg_bot': msg_bot,
           'bot_msg_interval': 20, 'dataset': ds, 'model': model
          }
          
+"""
+# ResNet-50 after 10 epochs: Accuracy on trainset = 68%, Accuracy on validationset = 51%
+config = {'device':cuda, 'nr_runs': 1, 'cross_validation': False,
+          'val_ratio': 0.125, 'test_ratio': 0.125, 'input_shape': (3, 224, 224),
+          'resize': False, 'augmentation': 'none', 'lr': 0.005, 'batch_size': 32,
+          'number_of_tools': 7, 'nr_epochs': 10,
+          'random_frames': True, 'nr_videos': 10, 'nr_frames': 2000,
+          'weight_decay': 0, 'save_interval': 25, 'msg_bot': msg_bot,
+          'bot_msg_interval': 5, 'dataset': ds, 'model': model}
+"""
+
 if gui:
     while True:
         # Use the GUI, note it is only used for predictions.
