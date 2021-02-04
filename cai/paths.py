@@ -12,10 +12,10 @@ storage_data_path = storage_data_path = os.path.join(storage_path, 'data')
 model_result_path = os.path.join(os.path.abspath(os.getcwd()), 'results')
 
 # Path where the preprocessed videos will be stored
-pre_data_path = '../../input/BigDataset'
+pre_data_path = '../../input/48vidDS'
 
 # Original data paths. TODO: set necessary data paths.
-original_data_paths = {'Cholec80': '../../input/BigDataset/Cholec80'}
+original_data_paths = {'Cholec80': '../../input/BigDataset/48vidDS'}
 
 # Login for Telegram Bot
 telegram_login = {'chat_id': '-421262944',
