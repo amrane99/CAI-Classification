@@ -15,7 +15,7 @@ model_result_path = os.path.join(os.path.abspath(os.getcwd()), 'results')
 pre_data_path = '../../input/48vidDS'
 
 # Original data paths. TODO: set necessary data paths.
-original_data_paths = {'Cholec80': '../../input/48vidDS/videos'}
+original_data_paths = {'Cholec80': '../../input/48vidDS/Cholec80'}
 
 # Login for Telegram Bot
 telegram_login = {'chat_id': '-421262944',
