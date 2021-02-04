@@ -58,6 +58,7 @@ def Classification_initialize_and_train(config):
         agent_name = 'TransNetAgent'
 
     # 2. Define data
+    print("define data")
     data = Data()
     data.add_dataset(Cholec80(random_frames, nr_videos, nr_frames))
     train_ds = (dataset_name, 'train')
@@ -66,12 +67,14 @@ def Classification_initialize_and_train(config):
 
     # 3. Split data and define path
     splits = dict()
+    print("split data")
     for ds_name, ds in data.datasets.items():
         splits[ds_name] = split_dataset(ds, test_ratio=config['test_ratio'],
                                         val_ratio=config['val_ratio'], nr_repetitions=config['nr_runs'],
                                         cross_validation=config['cross_validation'])
 
     # Include the model name, Alexnet, CNN, Resnet etc. what has been used
+    print("include the model")
     paths = os.path.join(storage_data_path, 'models',
                          dataset_name + '_' + model_name, 'states')
     pathr = os.path.join(model_result_path, 'models',
