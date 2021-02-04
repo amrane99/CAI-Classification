@@ -118,7 +118,7 @@ def Classification_initialize_and_train(config):
 
         # 7. Initialize model
         model = getattr(models, model_name)(
-            output_features, feature_extraction)
+            output_features)
         model.to(device)
 
         # 8. Define loss and optimizer

@@ -63,8 +63,8 @@ parser.add_argument('--batch_size', action='store', type=int, nargs=1, default=5
                     help='Set the batch size')
 parser.add_argument('--epochs', action='store', type=int, nargs=1, default=30,
                     help='Set the number of epochs')
-parser.add_argument('--feature_extraction', action='store', type=bool, default=False,
-                    help='Set to true if only the FC-Layers should be retrained')
+#parser.add_argument('--feature_extraction', action='store', type=bool, default=False,
+#                    help='Set to true if only the FC-Layers should be retrained')
 
 
 # 5. Define configuration dict and train the model
@@ -81,7 +81,7 @@ weight_decay = args.weight_decay[0]
 learning_rate = args.learning_rate[0]
 batch_size = args.batch_size[0]
 epochs = args.epochs[0]
-feature_extraction = args.feature_extraction
+#feature_extraction = args.feature_extraction
 if isinstance(cuda, list):
     cuda = cuda[0]
 if isinstance(try_catch, list):
