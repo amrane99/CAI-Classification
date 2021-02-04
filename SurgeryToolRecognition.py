@@ -63,7 +63,7 @@ parser.add_argument('--batch_size', action='store', type=int, nargs=1, default=5
                     help='Set the batch size')
 parser.add_argument('--epochs', action='store', type=int, nargs=1, default=30,
                     help='Set the number of epochs')
-#parser.add_argument('--feature_extraction', action='store', type=bool, default=False,
+# parser.add_argument('--feature_extraction', action='store', type=bool, default=False,
 #                    help='Set to true if only the FC-Layers should be retrained')
 
 
@@ -109,7 +109,7 @@ config = {'device': cuda, 'nr_runs': 1, 'cross_validation': False,
           'number_of_tools': 7, 'nr_epochs': epochs,
           'random_frames': True, 'nr_videos': 10, 'nr_frames': 2000,
           'weight_decay': weight_decay, 'save_interval': 25, 'msg_bot': msg_bot,
-          'bot_msg_interval': 5, 'dataset': ds, 'model': model, 'optimizer': optimizer, 'feature_extraction': feature_extraction
+          'bot_msg_interval': 5, 'dataset': ds, 'model': model, 'optimizer': optimizer
           }
 
 if mode == 'train':
