@@ -12,7 +12,7 @@ storage_data_path = storage_data_path = os.path.join(storage_path, 'data')
 model_result_path = os.path.join(os.path.abspath(os.getcwd()), 'results')
 
 # Path where the preprocessed videos will be stored
-pre_data_path = '../../input/Cholec40'
+pre_data_path = '../../input/Cholec45'
 
 # Original data paths. TODO: set necessary data paths.
 original_data_paths = {'Cholec80': '../../input/48vidds/Cholec80'}
