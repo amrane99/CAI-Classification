@@ -78,7 +78,7 @@ else:
 # Note: Dataset will be nr_videos x nr_frames big!
 # weight decay: Cholec80 - 0.75
 config = {'device':cuda, 'nr_runs': 1, 'cross_validation': False, 
-          'val_ratio': 0.15, 'test_ratio': 0, 'input_shape': (3, 224, 224),
+          'val_ratio': 0.1, 'test_ratio': 0.025, 'input_shape': (3, 224, 224),
           'resize': False, 'augmentation': 'none', 'lr': 0.00005, 'batch_size': 64,
           'number_of_tools': 7, 'nr_epochs': 5,
           'random_frames': True, 'nr_videos': 50, 'nr_frames': 2000,
