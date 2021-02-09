@@ -79,10 +79,10 @@ else:
 # weight decay: Cholec80 - 0.75
 config = {'device':cuda, 'nr_runs': 1, 'cross_validation': False, 
           'val_ratio': 0.1, 'test_ratio': 0.025, 'input_shape': (3, 224, 224),
-          'resize': False, 'augmentation': 'none', 'lr': 0.00005, 'batch_size': 64,
+          'resize': False, 'augmentation': 'none', 'lr': 0.0001, 'batch_size': 32,
           'number_of_tools': 7, 'nr_epochs': 5,
           'random_frames': True, 'nr_videos': 50, 'nr_frames': 2000,
-          'weight_decay': 0.00001, 'save_interval': 2, 'msg_bot': msg_bot,
+          'weight_decay': 0.001, 'save_interval': 1, 'msg_bot': msg_bot,
           'bot_msg_interval': 5, 'dataset': ds, 'model': model
          }
 
