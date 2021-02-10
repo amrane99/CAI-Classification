@@ -287,11 +287,7 @@ def Classification_test(config):
     msg_bot = config['msg_bot']
     dataset_name = config['dataset']
     model_name = config['model']
-    if model_name == 'CNN':
-        model_name = 'CNN_Net2D'
-        agent_name = 'ClassificationAgent'
-    else:
-        agent_name = 'TransNetAgent'
+    agent_name = 'TransNetAgent'
 
 
     # 2. Define data
@@ -355,8 +351,10 @@ def Classification_predict():
     in an interactive way using the implemented GUI."""
     
     # Config dicts for each possible model and tool list for mapping
-    config_AlexNet = {'nr_epochs': 300, 'batch_size': 50, 'learning_rate': 0.001,
-                      'weight_decay': 0.75, 'model': 'AlexNet', 'test_acc': 80}
+    config_AlexNet = {'nr_epochs': 300, 'batch_size': 32, 'learning_rate': 0.0001,
+                      'weight_decay': 0.001, 'model': 'AlexNet', 'test_acc': 80}
+    config_ResNet =  {'nr_epochs': 300, 'batch_size': 32, 'learning_rate': 0.0001,
+                      'weight_decay': 0.001, 'model': 'ResNet', 'test_acc': 80}
     tool = ['Grasper', 'Bipolar', 'Hook', 'Scissors', 'Clipper', 'Irrigator', 'Specimenbag']
     start_again = False
     prev_video_path = ''
@@ -441,7 +439,7 @@ def Classification_predict():
                     
                 while True:
                     # 6. Let user choose model and device
-                    model_names = ('AlexNet', 'ResNet -- not yet implemented')
+                    model_names = ('AlexNet', 'ResNet')
                     model_device = gui.ChooseModelAndDevice(prev_model_names, model_names, prev_cpu, prev_gpu, prev_start_id)
                     if not model_device[0]:
                         sys.exit()
@@ -537,10 +535,7 @@ def Classification_predict():
                         start_again = True
                         break
                             
-                    if model_name == 'CNN_Net2D':
-                        prev_model_names = 'CNN'
-                    else:
-                        prev_model_names = model_name
+                    prev_model_names = model_name
                     if start_again:
                         break
                 prev_target_path = target_path

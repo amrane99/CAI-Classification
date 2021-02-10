@@ -115,7 +115,7 @@ def TransformVideo(target, video_info):
 
     sg.set_options(text_justification="left")
 
-    window = sg.Window("Pre-trained Model Parameters", layout, font=("Helvetica", 14))
+    window = sg.Window("Information about the video", layout, font=("Helvetica", 14))
     # Create an event loop
     while True:
         event, values = window.read()
@@ -148,7 +148,7 @@ def TransformVideoProgress():
     sg.set_options(text_justification="center")
     
     # Create the window
-    window = sg.Window("Transforming your video", layout, font=("Helvetica", 14))
+    window = sg.Window("Transforming the video", layout, font=("Helvetica", 14))
     progress_bar = window["progress"]
     
     return window, progress_bar
