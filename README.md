@@ -6,12 +6,17 @@ In a surgical environment it is important to keep track of the phase of an opera
 [Installation](#installation)
 
 [Usage](#usage)
+
  *[Graphical User Interface for predictions](#graphical-user-interface-for-predictions)
+ 
  *[Train and test models](#train-and-test-models)
+ 
  *[Provided models in the repository](#provided-models-in-the-repository)
 
 [Additional Notes for Developers](#additional-notes-for-developers)
+
 [Authors and acknowledgement](#authors-and-acknowledgement)
+
 [License](#license)
 
 
@@ -35,14 +40,14 @@ The Surgery Tool Recognition with the pre-trained models can only be used for pr
 ### Graphical User Interface for predictions
 To make predictions, the GUI needs to be started first. In this regard, `SurgeryToolRecognition.py` file needs to be executed using the `--use_gui` flag:
 ```bash
-				  ~ $ cd CAI-Classification
-				  ~ $ source ~/.bashrc
-				  ~ $ source activate <your_anaconda_env>
+		  ~ $ cd CAI-Classification
+		  ~ $ source ~/.bashrc
+		  ~ $ source activate <your_anaconda_env>
 <your_anaconda_env> $ python3 SurgeryToolRecognition.py --use_gui
 ```
 If everything has been installed the right way as described in [Installation](#installation), the following Welcome Window of the GUI starts:
 
-![welcome-window](CAI-Classification/docs/presentation/Images and Videos/WelcomeWindow.png)
+![welcome-window](https://github.com/amrane99/CAI-Classification/tree/main/docs/presentation/Images%20and%20Videos/WelcomeWindow.png)
 
 Then the user will be advised on how to use the Interface to make predictions on surgical videos using one of the pre-trained models. A demo video can be found [here](https://github.com/amrane99/CAI-Classification/tree/main/docs/video%20tutorial).
 
@@ -63,9 +68,9 @@ In the following, the different arguments/flags are listed and briefly described
 With the following command, a pre-trained `AlexNet` model -- if a saved state exists at specified path extracted from [`paths.py`](https://github.com/amrane99/CAI-Classification/tree/main/cai) -- will be restored and further trained using a GPU (cuda:4). If the process stops due to an error, the process will be restarted a maximum of two times. Additionally, the Telegram Bot -- credentials have to be specified in [`paths.py`](https://github.com/amrane99/CAI-Classification/tree/main/cai) -- will be used:
 
 ```bash
-				  ~ $ cd CAI-Classification
-				  ~ $ source ~/.bashrc
-				  ~ $ source activate <your_anaconda_env>
+		  ~ $ cd CAI-Classification
+		  ~ $ source ~/.bashrc
+		  ~ $ source activate <your_anaconda_env>
 <your_anaconda_env> $ python3 SurgeryToolRecognition.py --model AlexNet
                       --mode train --device 4 --use_telegram_bot
                       --try_catch_repeat 2
