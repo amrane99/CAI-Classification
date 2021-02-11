@@ -48,10 +48,10 @@ If everything has been installed the right way as described in [Installation](#i
 	<img src="https://github.com/amrane99/CAI-Classification/blob/main/docs/presentation/Images%20and%20Videos/WelcomeWindow.png" width="700" height="500"/>
 </p>
 
-Then the user will be advised on how to use the Interface to make predictions on surgical videos using one of the pre-trained models. A demo video can be found [here](https://github.com/amrane99/CAI-Classification/tree/main/docs/video%20tutorial).
+Then the user will be advised on how to use the Interface to make predictions on surgical videos using one of the pre-trained models. A demo video can be found [here](https://github.com/amrane99/CAI-Classification/blob/main/docs/video%20tutorial).
 
 ### Train and test models
-New model structures can be implemented in the [`CNN.py`](https://github.com/amrane99/CAI-Classification/tree/main/cai/models/classification). Note that either the `TransNetAgent` or `NonTransNetAgent` needs to be used based on the type of the new model, so they are already provided in [`classification_agents.py`](https://github.com/amrane99/CAI-Classification/blob/main/cai/agents/classification_agents.py), however the use of the specific Agent needs to be specified in [`Classification_train_restore_use.py`](https://github.com/amrane99/CAI-Classification/blob/main/train_restore_use_models/Classification_train_restore_use.py). Additionally, the `SurgeryToolRecognition.py` file needs to be updated, since the new model name has to be included in the argument parser to be able to train the new model.
+New model structures can be implemented in the [`CNN.py`](https://github.com/amrane99/CAI-Classification/blob/main/cai/models/classification/CNN.py). Note that either the `TransNetAgent` or `NonTransNetAgent` needs to be used based on the type of the new model, so they are already provided in [`classification_agents.py`](https://github.com/amrane99/CAI-Classification/blob/main/cai/agents/classification_agents.py), however the use of the specific Agent needs to be specified in [`Classification_train_restore_use.py`](https://github.com/amrane99/CAI-Classification/blob/main/train_restore_use_models/Classification_train_restore_use.py). Additionally, the `SurgeryToolRecognition.py` file needs to be updated, since the new model name has to be included in the argument parser to be able to train the new model.
 In the following, the different arguments/flags are listed and briefly described:
 
 | Tag_name | description | required | choices | default | 
@@ -64,7 +64,7 @@ In the following, the different arguments/flags are listed and briefly described
 | `--use_telegram_bot` | Send message during training through a Telegram Bot (Token and Chat-ID need to be provided, otherwise an error occurs!). | no | -- | `False` |
 | `--try_catch_repeat` | Try to train the model with a restored state again, after an error occurs. Repeat only <TRY_CATCH_REPEAT> number of times. | no | `int` > 0 | `0` |
 
-With the following command, a pre-trained `AlexNet` model -- if a saved state exists at specified path extracted from [`paths.py`](https://github.com/amrane99/CAI-Classification/tree/main/cai) -- will be restored and further trained using a GPU (cuda:4). If the process stops due to an error, the process will be restarted a maximum of two times. Additionally, the Telegram Bot -- credentials have to be specified in [`paths.py`](https://github.com/amrane99/CAI-Classification/tree/main/cai) -- will be used:
+With the following command, a pre-trained `AlexNet` model -- if a saved state exists at specified path extracted from [`paths.py`](https://github.com/amrane99/CAI-Classification/blob/main/cai/paths.py) -- will be restored and further trained using a GPU (cuda:4). If the process stops due to an error, the process will be restarted a maximum of two times. Additionally, the Telegram Bot -- credentials have to be specified in [`paths.py`](https://github.com/amrane99/CAI-Classification/blob/main/cai/paths.py) -- will be used:
 
 ```bash
 		  ~ $ cd CAI-Classification
@@ -89,7 +89,7 @@ config = {'device':cuda, 'nr_runs': 1, 'cross_validation': False,
 ```
 
 ### Provided models in the repository
-For further information regarding the development and introduced models the several [reports](https://github.com/amrane99/CAI-Classification/tree/main/docs/reports) and [presentation](https://github.com/amrane99/CAI-Classification/tree/main/docs/presentation) can be considered.
+For further information regarding the development and introduced models the several [reports](https://github.com/amrane99/CAI-Classification/blob/main/docs/reports) and [presentation](https://github.com/amrane99/CAI-Classification/blob/main/docs/presentation) can be considered.
 
 ## Additional Notes for Developers
 Please stick to the code style conventions in code_style_conventions.py
