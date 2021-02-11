@@ -515,6 +515,9 @@ def Classification_predict():
                             for idx, i in enumerate(value):
                                 if i == 1:
                                     tools += tool[idx] + ', '
+                            # When no tools predicted
+                            if len(tools[:-2]) == 0:
+                                tools = 'No tools used, '
                             # Replace value from dict with transformed one
                             predictions[key] = tools[:-2]
                             result += str(key) + ' ' + str(tools[:-2] + '\n')
