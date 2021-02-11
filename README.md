@@ -44,8 +44,9 @@ To make predictions, the GUI needs to be started first. In this regard, `Surgery
 ```
 If everything has been installed the right way as described in [Installation](#installation), the following Welcome Window of the GUI starts:
 
-<div style="text-align:center"><img src="https://github.com/amrane99/CAI-Classification/blob/main/docs/presentation/Images%20and%20Videos/WelcomeWindow.png" width="700" height="500"/></div>
-
+<p align="center">
+	<img src="https://github.com/amrane99/CAI-Classification/blob/main/docs/presentation/Images%20and%20Videos/WelcomeWindow.png" width="700" height="500"/>
+</p>
 
 Then the user will be advised on how to use the Interface to make predictions on surgical videos using one of the pre-trained models. A demo video can be found [here](https://github.com/amrane99/CAI-Classification/tree/main/docs/video%20tutorial).
 
