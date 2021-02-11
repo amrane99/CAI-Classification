@@ -4,10 +4,11 @@ In a surgical environment it is important to keep track of the phase of an opera
 ## Table Of Contents
 
 [Installation](#installation)
+
 [Usage](#usage)
- 1. [Graphical User Interface for predictions](#graphical-user-interface-for-predictions)
- 2. [Train and test models](#train-and-test-models)
- 3. [Provided models in the repository](#provided-models-in-the-repository)
+ *[Graphical User Interface for predictions](#graphical-user-interface-for-predictions)
+ *[Train and test models](#train-and-test-models)
+ *[Provided models in the repository](#provided-models-in-the-repository)
 
 [Additional Notes for Developers](#additional-notes-for-developers)
 [Authors and acknowledgement](#authors-and-acknowledgement)
@@ -31,7 +32,7 @@ When using pylint, torch and numpy warnings appear. To avoid the warning, includ
 The Surgery Tool Recognition with the pre-trained models can only be used for predictions in combination with the Graphical User Interface (GUI).
 **Note**: With the GUI, only predictions can be made, whereas the Source Code with different arguments can be solely used to train and test (new) models.
 
-### 1. Graphical User Interface for predictions
+### Graphical User Interface for predictions
 To make predictions, the GUI needs to be started first. In this regard, `SurgeryToolRecognition.py` file needs to be executed using the `--use_gui` flag:
 ```bash
 				  ~ $ cd CAI-Classification
@@ -45,7 +46,7 @@ If everything has been installed the right way as described in [Installation](#i
 
 Then the user will be advised on how to use the Interface to make predictions on surgical videos using one of the pre-trained models. A demo video can be found [here](https://github.com/amrane99/CAI-Classification/tree/main/docs/video%20tutorial).
 
-### 2. Train and test models
+### Train and test models
 New model structures can be implemented in the [`CNN.py`](https://github.com/amrane99/CAI-Classification/tree/main/cai/models/classification). Note that either the `TransNetAgent` or `NonTransNetAgent` needs to be used based on the type of the new model, so they are already provided in [`classification_agents.py`](https://github.com/amrane99/CAI-Classification/blob/main/cai/agents/classification_agents.py), however the use of the specific Agent needs to be specified in [`Classification_train_restore_use.py`](https://github.com/amrane99/CAI-Classification/blob/main/train_restore_use_models/Classification_train_restore_use.py). Additionally, the `SurgeryToolRecognition.py` file needs to be updated, since the new model name has to be included in the argument parser to be able to train the new model.
 In the following, the different arguments/flags are listed and briefly described:
 
@@ -83,7 +84,7 @@ config = {'device':cuda, 'nr_runs': 1, 'cross_validation': False,
          }
 ```
 
-### 3. Provided models in the repository
+### Provided models in the repository
 For further information regarding the development and introduced models the several [reports](https://github.com/amrane99/CAI-Classification/tree/main/docs/reports) and [presentation](https://github.com/amrane99/CAI-Classification/tree/main/docs/presentation) can be considered.
 
 ## Additional Notes for Developers
