@@ -81,7 +81,7 @@ Note that specifications like the learning rate, number of epochs and batch size
 config = {'device':cuda, 'nr_runs': 1, 'cross_validation': False,
           'val_ratio': 0.12, 'test_ratio': 0.08, 'input_shape': (3, 224, 224),
           'resize': False, 'augmentation': 'none', 'lr': 0.001,
-          'batch_size': 5032, 'number_of_tools': 7, 'nr_epochs': 300,
+          'batch_size': 32, 'number_of_tools': 7, 'nr_epochs': 300,
           'random_frames': True, 'nr_videos': 40, 'nr_frames': 2000,
           'weight_decay': 0.01, 'save_interval': 15, 'msg_bot': msg_bot,
           'bot_msg_interval': 15, 'dataset': ds, 'model': model
