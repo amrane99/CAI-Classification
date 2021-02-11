@@ -6,12 +6,9 @@ In a surgical environment it is important to keep track of the phase of an opera
 [Installation](#installation)
 
 [Usage](#usage)
-
- *[Graphical User Interface for predictions](#graphical-user-interface-for-predictions)
- 
- *[Train and test models](#train-and-test-models)
- 
- *[Provided models in the repository](#provided-models-in-the-repository)
+  * [Graphical User Interface for predictions](#graphical-user-interface-for-predictions)
+  * [Train and test models](#train-and-test-models)
+  * [Provided models in the repository](#provided-models-in-the-repository)
 
 [Additional Notes for Developers](#additional-notes-for-developers)
 
@@ -47,7 +44,8 @@ To make predictions, the GUI needs to be started first. In this regard, `Surgery
 ```
 If everything has been installed the right way as described in [Installation](#installation), the following Welcome Window of the GUI starts:
 
-![welcome-window](https://github.com/amrane99/CAI-Classification/tree/main/docs/presentation/Images%20and%20Videos/WelcomeWindow.png)
+<img src="https://github.com/amrane99/CAI-Classification/blob/main/docs/presentation/Images%20and%20Videos/WelcomeWindow.png" width="700" height="500" />
+
 
 Then the user will be advised on how to use the Interface to make predictions on surgical videos using one of the pre-trained models. A demo video can be found [here](https://github.com/amrane99/CAI-Classification/tree/main/docs/video%20tutorial).
 
