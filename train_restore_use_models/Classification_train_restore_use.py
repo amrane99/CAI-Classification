@@ -353,8 +353,8 @@ def Classification_predict():
     # Config dicts for each possible model and tool list for mapping
     config_AlexNet = {'nr_epochs': 300, 'batch_size': 32, 'learning_rate': 0.0001,
                       'weight_decay': 0.001, 'model': 'AlexNet', 'test_acc': 80}
-    config_ResNet =  {'nr_epochs': 300, 'batch_size': 32, 'learning_rate': 0.0001,
-                      'weight_decay': 0.001, 'model': 'ResNet', 'test_acc': 80}
+    config_ResNet =  {'nr_epochs': 40, 'batch_size': 62, 'learning_rate': 0.001,
+                      'weight_decay': 0.00005, 'model': 'ResNet', 'test_acc': 80}
     tool = ['Grasper', 'Bipolar', 'Hook', 'Scissors', 'Clipper', 'Irrigator', 'Specimenbag']
     start_again = False
     prev_video_path = ''
@@ -463,6 +463,8 @@ def Classification_predict():
                         # 7. Display model specifications based on model name
                         if model_name == 'AlexNet':
                             model_specs = gui.ModelSpecs(config_AlexNet)
+                        if model_name == 'ResNet':
+                            model_specs = gui.ModelSpecs(config_ResNet)
                         if not model_specs[0]:
                             sys.exit()
                         if model_specs[1]:
@@ -530,7 +532,7 @@ def Classification_predict():
                         
                         # 11. Save result as json in target_paths
                         print("Saving results in form of .json..")
-                        with open(os.path.join(target_path, filename+'-tool.json'), 'w') as fp:
+                        with open(os.path.join(target_path, filename+'-predicted_tools.json'), 'w') as fp:
                             json.dump(predictions, fp, sort_keys=False, indent=4)
                             
                         if not results:
