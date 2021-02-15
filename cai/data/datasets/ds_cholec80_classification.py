@@ -12,6 +12,8 @@ from cai.utils.load_restore import join_path
 from cai.data.datasets.dataset_classification import ClassificationDataset, ClassificationPathInstance
 from cai.paths import storage_data_path, pre_data_path
 import cai.data.datasets.dataset_utils as du
+import s3fs
+
 
 
 class Cholec80(ClassificationDataset):
@@ -126,7 +128,9 @@ def _extract_images(source_path, target_path):
     r"""Extracts videos and saves the modified videos."""
     videos_path = os.path.join(source_path, 'videos')
     labels_path = os.path.join(source_path, 'tool-annotations')
-
+    #use aws s3 bucket as source
+    #fs = s3fs.S3FileSystem()
+    #filenames = fs.ls(videos_path)
     # Filenames have the form 'videoXX.mp4'
     filenames = [x.split('.')[0] for x in os.listdir(videos_path) if '.mp4' in x
                  and '._' not in x]
