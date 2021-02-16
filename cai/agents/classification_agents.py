@@ -103,14 +103,14 @@ class TransNetAgent(Agent):
                 accuracy_val.append([epoch+1, acc_val / idxs_val])
                 accuracy_val_detailed.append(list(zip(results_y_val, results_yhat_val)))
 
-            print(('ResNet: Epoch --> Loss --> Accuracy: {} --> {:.4} --> {:.4}%.\n'
-                   'ResNet: Val_Loss --> Val_Accuracy: {:.4} --> {:.4}%.').format(epoch + 1,
+            print(('AWS: Epoch --> Loss --> Accuracy: {} --> {:.4} --> {:.4}%.\n'
+                   'AWS: Val_Loss --> Val_Accuracy: {:.4} --> {:.4}%.').format(epoch + 1,
                                                     sum(epoch_loss) / total,
                                                     acc / idxs,
                                                     sum(epoch_loss_val) / total_val,
                                                     acc_val / idxs_val))
             if (epoch + 1) % bot_msg_interval == 0 and msg_bot:
-                self.bot.send_msg(('ResNet: Epoch --> Loss --> Accuracy: {} --> {:.4} --> {:.4}%.\n'
+                self.bot.send_msg(('AWS: Epoch --> Loss --> Accuracy: {} --> {:.4} --> {:.4}%.\n'
                                    'Val_Loss --> Val_Accuracy: {:.4} --> {:.4}%.').format(epoch + 1,
                                                                     sum(epoch_loss) / total,
                                                                     acc / idxs,
@@ -129,7 +129,7 @@ class TransNetAgent(Agent):
 
     def test(self, loss_f, test_dataloader, msg_bot=True):
         if msg_bot == True:
-            self.bot.send_msg('Start testing the ResNet model..')
+            self.bot.send_msg('Start testing the model on aws..')
         losses = list()
         accuracy = list()
         accuracy_detailed = list()
@@ -152,8 +152,8 @@ class TransNetAgent(Agent):
                 accuracy.append([idx+1, 100 * accuracy_score(y.cpu().detach().numpy(), mod_yhat)])
                 accuracy_detailed.extend(list(zip(y.cpu().detach().numpy().tolist(),
                                                   mod_yhat.cpu().detach().numpy().tolist())))
-        print('ResNet: Testset --> Overall Loss: {:.4}.'.format(losses_cum / total))
-        print('ResNet: Accuracy of the model on the test set: %d %%' % (acc / idxs))
+        print('AWS: Testset --> Overall Loss: {:.4}.'.format(losses_cum / total))
+        print('AWS: Accuracy of the model on the test set: %d %%' % (acc / idxs))
         if msg_bot == True:
             self.bot.send_msg('ResNet: Testset --> Overall Loss: {:.4}.'.format(losses_cum / total))
             self.bot.send_msg('ResNet: Accuracy of the ResNet model on the test set: %d %%' % (acc / idxs))
