@@ -89,7 +89,7 @@ config = {'device':cuda, 'nr_runs': 1, 'cross_validation': False,
 ```
 
 ### Provided models in the repository
-Several approaches have been tested, for instance using the AlexNet and ResNet in form of transfer learning. Only a trained AlexNet model has been provided in this repository under [Cholec80_AlexNet](https://github.com/amrane99/CAI-Classification/blob/main/results/models/Cholec80_AlexNet), since the ResNet training did not lead to the desired outcome and was therefore omitted. However, the ResNet50 model structure is still implemented and provided in [`CNN.py`](https://github.com/amrane99/CAI-Classification/blob/main/cai/models/classification/CNN.py).
+Several approaches have been tested, for instance using the AlexNet and ResNet in form of transfer learning. Only a trained AlexNet model has been provided in this repository under ['Cholec80_AlexNet'](https://github.com/amrane99/CAI-Classification/blob/main/results/models/Cholec80_AlexNet), since the ResNet training did not lead to the desired outcome and was therefore omitted. However, the ResNet50 model structure is still implemented and provided in [`CNN.py`](https://github.com/amrane99/CAI-Classification/blob/main/cai/models/classification/CNN.py).
 The AlexNet was trained -- due to time constraints -- for only 40 epochs and resulted in an average test accuracy of 67%, which is quite good compared to the ToolNet of the official Paper [EndoNet](https://arxiv.org/pdf/1602.03012.pdf) where an AlexNet was used as well and achieved a test accuracy of 80.9%. The following configurations have been used to perform the transfer learning:
 
 ```python
@@ -105,24 +105,24 @@ config = {'device':'cuda:0', 'nr_runs': 1, 'cross_validation': False,
 
 In the following the train accuracies and losses as well as the validation accuracies and test accuracies will be presented:
 
-##### Train losses
+##### Losses: Train dataset [%]
 <p align="center">
     <img src="https://github.com/amrane99/CAI-Classification/blob/main/results/models/Cholec80_AlexNet/results/losses_train.png" width="700" height="500"/>
 </p>
 
-##### Train accuracies
+##### Accuracies: Train dataset [%]
 <p align="center">
-    <img src="https://github.com/amrane99/CAI-Classification/blob/main/results/models/Cholec80_AlexNet/results/accuracy_train.png" width="700" height="500"/>
+    <img src="https://github.com/amrane99/CAI-Classification/blob/main/results/models/Cholec80_AlexNet/results/accuracy_train.png" width="700" height="400"/>
 </p>
 
-##### Validation accuracies
+##### Accuracies: Validation dataset [%]
 <p align="center">
-    <img src="https://github.com/amrane99/CAI-Classification/blob/main/results/models/Cholec80_AlexNet/results/accuracy_val.png" width="700" height="500"/>
+    <img src="https://github.com/amrane99/CAI-Classification/blob/main/results/models/Cholec80_AlexNet/results/accuracy_val.png" width="700" height="400"/>
 </p>
 
-##### Test accuracies
+##### Accuracies: Test dataset [%]
 <p align="center">
-    <img src="https://github.com/amrane99/CAI-Classification/blob/main/results/models/Cholec80_AlexNet/results/accuracy_test.png" width="700" height="500"/>
+    <img src="https://github.com/amrane99/CAI-Classification/blob/main/results/models/Cholec80_AlexNet/results/accuracy_test.png" width="700" height="400"/>
 </p>
 
 For further information regarding the development and introduced models the several [reports](https://github.com/amrane99/CAI-Classification/blob/main/docs/reports) and [presentation](https://github.com/amrane99/CAI-Classification/blob/main/docs/presentation) can be considered.
