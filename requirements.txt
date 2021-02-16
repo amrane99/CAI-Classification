@@ -1,17 +1,72 @@
-setuptools
-matplotlib
-moviepy
-numpy
-pandas
-PySimpleGUI
-scikit_learn
-seaborn
-telegram
-torch
-torchio
-torchsummary
-torchvision
-pytest
-scipy
-ez_setup
-av
+# CAI-Classification/cai/gui/gui.py: 3
+# CAI-Classification/train_restore_use_models/Classification_train_restore_use.py: 24
+PySimpleGUI == 4.34.0
+
+# CAI-Classification/cai/visualization/plot_results.py: 7
+matplotlib == 3.3.4
+
+# CAI-Classification/cai/data/datasets/ds_cholec80_classification.py: 7
+# CAI-Classification/train_restore_use_models/Classification_train_restore_use.py: 20
+moviepy == 1.0.3
+
+# CAI-Classification/cai/agents/agent.py: 9
+# CAI-Classification/cai/agents/classification_agents.py: 9
+# CAI-Classification/cai/data/datasets/dataset_utils.py: 5
+# CAI-Classification/cai/data/datasets/ds_cholec80_classification.py: 9
+# CAI-Classification/cai/models/model.py: 8
+# CAI-Classification/cai/utils/load_restore.py: 8
+# CAI-Classification/cai/utils/save_results.py: 4
+# CAI-Classification/train_restore_use_models/Classification_train_restore_use.py: 4
+numpy == 1.20.1
+
+# CAI-Classification/cai/utils/save_results.py: 5
+# CAI-Classification/train_restore_use_models/Classification_train_restore_use.py: 5
+pandas == 1.2.2
+
+# CAI-Classification/cai/utils/update_bots/telegram_bot.py: 10
+python_telegram_bot == 12.8
+
+# CAI-Classification/cai/agents/classification_agents.py: 10
+scikit_learn == 0.24.1
+
+# CAI-Classification/cai/visualization/plot_results.py: 8
+seaborn == 0.11.1
+
+# CAI-Classification/setup.py: 1
+setuptools == 52.0.0
+
+# CAI-Classification/cai/agents/classification_agents.py: 6
+# CAI-Classification/cai/data/datasets/dataset_classification.py: 11
+# CAI-Classification/cai/data/datasets/dataset_utils.py: 6
+# CAI-Classification/cai/data/pytorch/pytorch_classification_dataset.py: 13
+# CAI-Classification/cai/data/pytorch/pytorch_dataset.py: 7
+# CAI-Classification/cai/data/pytorch/transformation.py: 7,8
+# CAI-Classification/cai/eval/inference/predict.py: 6
+# CAI-Classification/cai/eval/inference/predictor.py: 9
+# CAI-Classification/cai/eval/losses/loss_abstract.py: 8
+# CAI-Classification/cai/eval/losses/losses_classification.py: 5,6
+# CAI-Classification/cai/models/classification/CNN.py: 5,6
+# CAI-Classification/cai/models/model.py: 7
+# CAI-Classification/cai/utils/pytorch/pytorch_load_restore.py: 6
+# CAI-Classification/cai/utils/save_results.py: 2
+# CAI-Classification/test/cuda/test_cuda.py: 1
+# CAI-Classification/test/data/pytorch/test_transformation.py: 3
+# CAI-Classification/test/eval/inference/test_predict.py: 1
+# CAI-Classification/train_restore_use_models/Classification_train_restore_use.py: 2,8,9
+torch == 1.7.1
+
+# CAI-Classification/cai/data/datasets/dataset_classification.py: 9
+# CAI-Classification/cai/data/pytorch/pytorch_classification_dataset.py: 14
+# CAI-Classification/cai/data/pytorch/transformation.py: 9
+# CAI-Classification/cai/eval/inference/predictor.py: 10
+torchio == 0.17.48
+
+# CAI-Classification/cai/models/model.py: 9
+torchsummary == 1.5.1
+
+# CAI-Classification/cai/agents/classification_agents.py: 8
+# CAI-Classification/cai/data/datasets/dataset_classification.py: 10
+# CAI-Classification/cai/data/pytorch/transformation.py: 10
+# CAI-Classification/cai/models/classification/CNN.py: 8
+# CAI-Classification/train_restore_use_models/Classification_train_restore_use.py: 26
+torchvision == 0.8.2
