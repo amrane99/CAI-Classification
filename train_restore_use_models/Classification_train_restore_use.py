@@ -351,10 +351,10 @@ def Classification_predict():
     in an interactive way using the implemented GUI."""
     
     # Config dicts for each possible model and tool list for mapping
-    config_AlexNet = {'nr_epochs': 300, 'batch_size': 32, 'learning_rate': 0.0001,
-                      'weight_decay': 0.001, 'model': 'AlexNet', 'test_acc': 80}
-    config_ResNet =  {'nr_epochs': 40, 'batch_size': 62, 'learning_rate': 0.001,
-                      'weight_decay': 0.00005, 'model': 'ResNet', 'test_acc': 80}
+    config_AlexNet = {'nr_epochs': 40, 'batch_size': 32, 'learning_rate': 0.0001,
+                      'weight_decay': 0.001, 'model': 'AlexNet', 'test_acc': 67}
+    #config_ResNet =  {'nr_epochs': 40, 'batch_size': 62, 'learning_rate': 0.001,
+    #                  'weight_decay': 0.00005, 'model': 'ResNet', 'test_acc': 80}
     tool = ['Grasper', 'Bipolar', 'Hook', 'Scissors', 'Clipper', 'Irrigator', 'Specimenbag']
     start_again = False
     prev_video_path = ''
@@ -439,7 +439,7 @@ def Classification_predict():
                     
                 while True:
                     # 6. Let user choose model and device
-                    model_names = ('AlexNet', 'ResNet')
+                    model_names = ('AlexNet', 'ResNet -- Can not be used')
                     model_device = gui.ChooseModelAndDevice(prev_model_names, model_names, prev_cpu, prev_gpu, prev_start_id)
                     if not model_device[0]:
                         sys.exit()
@@ -463,8 +463,8 @@ def Classification_predict():
                         # 7. Display model specifications based on model name
                         if model_name == 'AlexNet':
                             model_specs = gui.ModelSpecs(config_AlexNet)
-                        if model_name == 'ResNet':
-                            model_specs = gui.ModelSpecs(config_ResNet)
+                        #if model_name == 'ResNet':
+                        #    model_specs = gui.ModelSpecs(config_ResNet)
                         if not model_specs[0]:
                             sys.exit()
                         if model_specs[1]:

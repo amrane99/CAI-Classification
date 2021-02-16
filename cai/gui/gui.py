@@ -202,8 +202,8 @@ def ModelSpecs(config):
                           [sg.Text("number of tools:", size=(13, 1)), sg.Text("7", size=(6, 1))],
                           [sg.Text("nr_epochs: ", size=(12, 1)), sg.Text("  "+str(config["nr_epochs"]), size=(6, 1)), sg.Text("  batch_size: ", size=(12, 1)), sg.Text("   "+str(config["batch_size"]), size=(6, 1))],
                           [sg.Text("loss: ", size=(13, 1)), sg.Text("Binary Cross Entropy Loss")],
-                          [sg.Text("val_ratio: ", size=(13, 1)), sg.Text("0.125", size=(6, 1)), sg.Text("test_ratio: ", size=(13, 1)),
-                           sg.Text("0.125", size=(6, 1))],
+                          [sg.Text("val_ratio: ", size=(13, 1)), sg.Text("0.2", size=(6, 1)), sg.Text("test_ratio: ", size=(13, 1)),
+                           sg.Text("0.3", size=(6, 1))],
                           [sg.Text("learning_rate: ", size=(13, 1)), sg.Text(str(config["learning_rate"]), size=(6, 1)), sg.Text("weight_decay: ", size=(13, 1)), sg.Text(str(config["weight_decay"]), size=(8, 1))]]
     video_specs = [[sg.Text("nr_videos: ", size=(13, 1)), sg.Text("80", size=(6, 1))],
                    [sg.Text("nr_frames: ", size=(13, 1)), sg.Text("2000", size=(6, 1))],
