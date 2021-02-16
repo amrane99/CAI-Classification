@@ -9,6 +9,7 @@ In a surgical environment it is important to keep track of the phase of an opera
   * [Graphical User Interface for predictions](#graphical-user-interface-for-predictions)
   * [Train and test models](#train-and-test-models)
   * [Provided models in the repository](#provided-models-in-the-repository)
+  	* [Accuracies: Test dataset [%]](#accuracies:_test_dataset_[%])
 
 [Additional Notes for Developers](#additional-notes-for-developers)
 
