@@ -439,7 +439,7 @@ def Classification_predict():
                     
                 while True:
                     # 6. Let user choose model and device
-                    model_names = ('AlexNet', 'ResNet -- Can not be used')
+                    model_names = ('AlexNet', '')
                     model_device = gui.ChooseModelAndDevice(prev_model_names, model_names, prev_cpu, prev_gpu, prev_start_id)
                     if not model_device[0]:
                         sys.exit()
