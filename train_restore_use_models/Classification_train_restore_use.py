@@ -420,7 +420,7 @@ def Classification_predict():
                 
                 if prev_target_path == target_path and os.path.isfile(os.path.join(target_path, filename+'_transformed.mp4')) and int(video.fps) == 1 and int(video.h) == 224 and int(video.w) == 224:
                     print('Video already transformed..')
-                elif target_path is not None and fps != 1:
+                if not (target_path is not None and fps == 1 and int(video.h) == 224 and int(video.w) == 224):
                     print('Transforming the video..')
                     transform_window, transform_progress_bar = gui.TransformVideoProgress()
                     _, _ = transform_window.read(timeout=0, timeout_key="timeout")
@@ -493,21 +493,22 @@ def Classification_predict():
                             transforms.ToTensor(),
                             transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
                         ])
-                        
-                        for idx in range(frames):
-                            msg = "Predicting present tools in Frame "
-                            msg += str(idx + 1) + " of " + str(frames) + "."
-                            print (msg, end = "\r")
-                            np_frame = video.get_frame(idx)
-                            x = torch.from_numpy(np_frame).permute(2, 0, 1)
-                            # Normalization only necessary for transfer learned models
-                            x = normalize(x.cpu().detach())
-                            yhat = model(x.unsqueeze(0))
-                            yhat = yhat.cpu().detach().numpy()
-                            frame_to_sec = time.strftime('%H:%M:%S', time.gmtime(idx+1)).split(':')
-                            frame_sec = frame_to_sec[0] + ' h - ' + frame_to_sec[1] + ' m - ' + str(int(frame_to_sec[2])) + ' s'
-                            predictions['Frame ' + str(idx+1) + ' --> ' + str(frame_sec) + ':'] = np.round(yhat)[0]
-                            prediction_progress_bar.update_bar(idx+2)
+                                
+                        with torch.no_grad():
+                            for idx in range(frames):
+                                msg = "Predicting present tools in Frame "
+                                msg += str(idx + 1) + " of " + str(frames) + "."
+                                print (msg, end = "\r")
+                                np_frame = video.get_frame(idx)
+                                x = torch.from_numpy(np_frame).permute(2, 0, 1)
+                                # Normalization only necessary for transfer learned models
+                                x = normalize(x.cpu().detach())
+                                yhat = model(x.unsqueeze(0))
+                                yhat = yhat.cpu().detach().numpy()
+                                frame_to_sec = time.strftime('%H:%M:%S', time.gmtime(idx+1)).split(':')
+                                frame_sec = frame_to_sec[0] + ' h - ' + frame_to_sec[1] + ' m - ' + str(int(frame_to_sec[2])) + ' s'
+                                predictions['Frame ' + str(idx+1) + ' --> ' + str(frame_sec) + ':'] = np.round(yhat)[0]
+                                prediction_progress_bar.update_bar(idx+2)
                         
                         # 9. Transform predictions and save the result under target path
                         result = ''
