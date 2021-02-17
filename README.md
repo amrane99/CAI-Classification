@@ -21,12 +21,11 @@ In a surgical environment it is important to keep track of the phase of an opera
 Use Anaconda to install everything:
 
 1. Create a Python3.8 environment as follows: `conda create -n <your_anaconda_env> python=3.8` and activate the environment.
-3. Install CUDA and PyTorch through conda with the command specified by https://pytorch.org/. The command for Linux was at the time `conda install pytorch torchvision cudatoolkit=10.2 -c pytorch`.
-4. Navigate to the project root (where setup.py lives)
-5. Execute `pip install -r requirements.txt` to install all required packages.
-6. Set your paths in cai.paths.py.
-7. Execute `git update-index --assume-unchanged cai/paths.py` so that changes in the paths file are not tracked in the repository.
-8. Execute `pytest` to test the correct installation. Note that one of the tests will test whether at least one GPU is present, if you do not want to test this, remove the test or ignore the result. The same goes for tests, testing the presence of datasets that should be downloaded in advance.
+2. Install CUDA and PyTorch through conda with the command specified by https://pytorch.org/. The command for Linux was at the time `conda install pytorch torchvision cudatoolkit=10.2 -c pytorch`.
+3. Navigate to the project root (where setup.py lives)
+4. Execute `pip install -r requirements.txt` to install all required packages.
+5. Set your paths in cai.paths.py.
+6. Execute `git update-index --assume-unchanged cai/paths.py` so that changes in the paths file are not tracked in the repository.
 
 When using pylint, torch and numpy warnings appear. To avoid the warning, include generated-members=numpy.*, torch.* in the .pylintrc file.
 
