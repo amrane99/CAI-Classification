@@ -56,7 +56,7 @@ In the following, the different arguments/flags are listed and briefly described
 | Tag_name | description | required | choices | default | 
 |:-:|-|:-:|:-:|:-:|
 | `--use_gui` | Use the GUI for predicting present tools in surgical videos. | no | -- | `False` |
-| `--model` | Specify the model you want to use. | no | `AlexNet`, `ResNet` | `Alexnet` |
+| `--model` | Specify the model you want to use. | no | `AlexNet` | `Alexnet` |
 | `--mode` | Specify in which mode to use the model. | no | `train`, `test` | `train` |
 | `--device` | Try to train the model on the GPU device with <DEVICE> ID. Valid IDs: 0, 1, ..., 7. ID -1 would mean to use a CPU. | no | `[-1, 0, ..., 7]` | `4` |
 | `--restore` | Restore last saved model state and continue training from there. | no | -- | `False` |
