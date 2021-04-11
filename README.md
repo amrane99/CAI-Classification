@@ -131,7 +131,7 @@ Please stick to the code style conventions in code_style_conventions.py
 
 ## Authors and acknowledgement
 This work was performed in the scope of the lecture Deep Learning for Medical Imaging (DLMI) at the Technical University of Darmstadt. I want to thank the lecturer and research assistant of this course who gave us the opportunity to conduct such an instructive project. I also want to thank my fellow students for the smooth collaboration given the current pandemic and of course for the results of our work.
-This project was conducted by [Amin Ranem](https://www.linkedin.com/in/amin-ranem-4b79b5195), [Nil Crespo Peiró](https://www.linkedin.com/in/nil-crespo-peiró-7a82a1183) and Paco Rahn.
+This project was conducted by [Amin Ranem](https://www.linkedin.com/in/amin-ranem-4b79b5195), [Nil Crespo Peiró](https://www.linkedin.com/in/nil-crespo-peiró-7a82a1183) and [Paco Rahn](https://www.linkedin.com/in/paco-rahn-92060420b/).
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
