@@ -1,3 +1,6 @@
+# -e . Necessary so the packages can be important throughout the code
+-e .
+
 # CAI-Classification/cai/gui/gui.py: 3
 # CAI-Classification/train_restore_use_models/Classification_train_restore_use.py: 24
 PySimpleGUI == 4.34.0
